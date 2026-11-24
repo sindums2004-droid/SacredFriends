@@ -1,0 +1,38 @@
+{
+  "name": "sacred-friends-fullstack",
+  "version": "2.0.0",
+  "description": "Sacred Friends by Q-CUBIC — Windows Desktop Companion Application Website and Licensing Platform",
+  "type": "module",
+  "scripts": {
+    "dev:frontend": "vite --port 5173",
+    "dev:backend": "node backend/server.js",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node backend/server.js",
+    "test": "node backend/test_runner.js"
+  },
+  "keywords": [
+    "sacred-friends",
+    "q-cubic",
+    "desktop-companion",
+    "windows",
+    "licensing",
+    "youpi-pg",
+    "mongodb"
+  ],
+  "author": "Q-CUBIC Innovations",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "mongoose": "^8.9.5",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "vite": "^8.3.5"
+  }
+}

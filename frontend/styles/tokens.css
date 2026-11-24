@@ -1,0 +1,63 @@
+:root {
+  /* Midnight Navy Blue & Royal Gold Heritage Palette */
+  --color-bg-deep: #050814;
+  --color-bg-surface: #0a1128;
+  --color-bg-card: rgba(12, 20, 44, 0.78);
+  --color-bg-card-hover: rgba(18, 30, 64, 0.9);
+  --color-bg-glass: rgba(10, 17, 36, 0.72);
+
+  /* Royal Gold & Warm Yellow Accents */
+  --color-gold-light: #fef08a;
+  --color-gold-base: #d4af37;
+  --color-gold-dark: #a1781b;
+  --color-gold-glow: rgba(212, 175, 55, 0.38);
+  --color-gold-shimmer: linear-gradient(135deg, #fff7d6 0%, #d4af37 50%, #996515 100%);
+
+  /* Typography Colors */
+  --color-warm-ivory: #fbf8f1;
+  --color-soft-cream: #e2dcd2;
+  --color-muted-stone: #94a3b8;
+
+  /* Midnight Navy Accents */
+  --color-navy-deep: #060b19;
+  --color-navy-accent: #1e293b;
+  --color-navy-glow: rgba(56, 189, 248, 0.22);
+  --color-azure: #38bdf8;
+
+  /* Status Colors */
+  --color-emerald: #10b981;
+  --color-emerald-glow: rgba(16, 185, 129, 0.3);
+  --color-amber: #f59e0b;
+  --color-rose: #f43f5e;
+  --color-sky: #38bdf8;
+
+  /* Typography */
+  --font-display: 'Cinzel', serif, Georgia;
+  --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace, Consolas;
+
+  /* Borders & Shadows */
+  --border-gold-subtle: rgba(212, 175, 55, 0.22);
+  --border-gold-bright: rgba(212, 175, 55, 0.6);
+  --border-glass: rgba(255, 255, 255, 0.09);
+  --border-navy: rgba(56, 189, 248, 0.15);
+
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 10px 32px rgba(0, 0, 0, 0.65);
+  --shadow-lg: 0 20px 64px rgba(0, 0, 0, 0.88);
+  --shadow-divine: 0 0 50px rgba(212, 175, 55, 0.22), 0 15px 35px rgba(0, 0, 0, 0.7);
+  --shadow-gold-hover: 0 8px 30px rgba(212, 175, 55, 0.28);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-cinematic: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
