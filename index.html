@@ -901,18 +901,30 @@
           </div>
         </div>
 
-        <!-- Dynamic QR Code Card -->
+        <!-- Dynamic QR Code Card & QR View Switcher -->
         <div class="checkout-qr-container">
+          <div class="qr-view-toggle" style="display: inline-flex; gap: 4px; margin-bottom: 0.85rem; background: rgba(6, 11, 26, 0.85); padding: 3px; border-radius: var(--radius-full); border: 1px solid var(--border-gold-subtle);">
+            <button type="button" class="qr-tab-btn active" id="btn-qr-dynamic" style="padding: 5px 12px; font-size: 0.74rem; border-radius: var(--radius-full); border: none; cursor: pointer; background: linear-gradient(135deg, rgba(212, 175, 55, 0.35) 0%, rgba(254, 240, 138, 0.2) 100%); color: var(--color-gold-light); font-weight: 600;">
+              ⚡ Dynamic ₹499 QR
+            </button>
+            <button type="button" class="qr-tab-btn" id="btn-qr-phonepe" style="padding: 5px 12px; font-size: 0.74rem; border-radius: var(--radius-full); border: none; cursor: pointer; background: transparent; color: var(--color-muted-stone); font-weight: 500;">
+              📱 PhonePe Standee QR
+            </button>
+          </div>
+
           <div class="checkout-qr-card">
-            <canvas id="checkout-qr-canvas" class="checkout-qr-canvas" width="220" height="220"></canvas>
-            <div class="checkout-qr-emblem" aria-hidden="true">
-              <img src="/assets/sacred_friends_logo.png" alt="Sacred Friends" />
+            <div id="checkout-qr-dynamic-wrap" style="position: relative;">
+              <canvas id="checkout-qr-canvas" class="checkout-qr-canvas" width="220" height="220"></canvas>
+              <div class="checkout-qr-emblem" aria-hidden="true">
+                <img src="/assets/sacred_friends_logo.png" alt="Sacred Friends" />
+              </div>
             </div>
+            <img id="checkout-qr-phonepe-img" src="/assets/phonepe_qr.jpg" alt="Official PhonePe QR" style="max-width: 220px; border-radius: 10px; display: none;" />
           </div>
           
           <div class="checkout-supported-apps">
+            <span class="checkout-app-badge" style="background: rgba(103, 58, 183, 0.25); border-color: rgba(103, 58, 183, 0.5); color: #d8b4fe;">PhonePe Accepted</span>
             <span class="checkout-app-badge">Google Pay</span>
-            <span class="checkout-app-badge">PhonePe</span>
             <span class="checkout-app-badge">Paytm</span>
             <span class="checkout-app-badge">BHIM</span>
             <span class="checkout-app-badge">Cred</span>
@@ -922,8 +934,9 @@
         <!-- Manual VPA & Beneficiary Details -->
         <div class="checkout-vpa-row">
           <div style="text-align: left;">
-            <span style="font-size: 0.7rem; color: #94A3B8; display: block; text-transform: uppercase;">Official UPI VPA</span>
-            <span class="checkout-vpa-val" id="checkout-vpa-text">sacredfriends@upi</span>
+            <span style="font-size: 0.7rem; color: #94A3B8; display: block; text-transform: uppercase;">Official UPI VPA · PhonePe</span>
+            <span class="checkout-vpa-val" id="checkout-vpa-text">7019886914@axl</span>
+            <span style="font-size: 0.74rem; color: var(--color-gold-light); display: block; margin-top: 2px;">Payee: VENKATA SAI PRUTHVI A V</span>
           </div>
           <button type="button" class="btn-copy-small" id="btn-copy-vpa">Copy UPI ID</button>
         </div>

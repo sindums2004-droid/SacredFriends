@@ -319,10 +319,10 @@ export function initV2Commerce() {
         orderIdDisplay.textContent = currentOrderId;
       }
 
-      // Generate authentic UPI payment URI string
-      const vpa = 'sacredfriends@upi';
-      const payeeName = 'Sacred Friends by Q-CUBIC';
-      const upiString = `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(payeeName)}&am=${orderData.displayAmount || currentAmount}&cu=INR&tn=${encodeURIComponent(currentOrderId)}`;
+      // Generate authentic UPI payment URI string with official payee
+      const vpa = '7019886914@axl';
+      const payeeName = 'VENKATA SAI PRUTHVI A V';
+      const upiString = `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(payeeName)}&am=${orderData.displayAmount || currentAmount}&cu=INR&tn=${encodeURIComponent(currentOrderId)}&mode=02&purpose=00`;
 
       // Render crisp in-modal QR code on canvas
       if (qrCanvas) {
@@ -406,13 +406,45 @@ export function initV2Commerce() {
     showStage('form');
   });
 
+  // QR View Switcher (Dynamic ₹499 QR vs PhonePe Standee)
+  const btnQrDynamic = document.getElementById('btn-qr-dynamic');
+  const btnQrPhonepe = document.getElementById('btn-qr-phonepe');
+  const qrDynamicWrap = document.getElementById('checkout-qr-dynamic-wrap');
+  const qrPhonepeImg = document.getElementById('checkout-qr-phonepe-img');
+
+  btnQrDynamic?.addEventListener('click', () => {
+    btnQrDynamic.classList.add('active');
+    btnQrDynamic.style.background = 'linear-gradient(135deg, rgba(212, 175, 55, 0.35) 0%, rgba(254, 240, 138, 0.2) 100%)';
+    btnQrDynamic.style.color = 'var(--color-gold-light)';
+    btnQrPhonepe?.classList.remove('active');
+    if (btnQrPhonepe) {
+      btnQrPhonepe.style.background = 'transparent';
+      btnQrPhonepe.style.color = 'var(--color-muted-stone)';
+    }
+    if (qrDynamicWrap) qrDynamicWrap.style.display = 'block';
+    if (qrPhonepeImg) qrPhonepeImg.style.display = 'none';
+  });
+
+  btnQrPhonepe?.addEventListener('click', () => {
+    btnQrPhonepe.classList.add('active');
+    btnQrPhonepe.style.background = 'linear-gradient(135deg, rgba(103, 58, 183, 0.4) 0%, rgba(147, 51, 234, 0.25) 100%)';
+    btnQrPhonepe.style.color = '#d8b4fe';
+    btnQrDynamic?.classList.remove('active');
+    if (btnQrDynamic) {
+      btnQrDynamic.style.background = 'transparent';
+      btnQrDynamic.style.color = 'var(--color-muted-stone)';
+    }
+    if (qrDynamicWrap) qrDynamicWrap.style.display = 'none';
+    if (qrPhonepeImg) qrPhonepeImg.style.display = 'block';
+  });
+
   // Copy UPI VPA
   vpaCopyBtn?.addEventListener('click', () => {
-    const vpa = vpaTextEl?.textContent?.trim() || 'sacredfriends@upi';
+    const vpa = vpaTextEl?.textContent?.trim() || '7019886914@axl';
     navigator.clipboard?.writeText(vpa).then(() => {
       vpaCopyBtn.textContent = 'Copied!';
       setTimeout(() => { vpaCopyBtn.textContent = 'Copy UPI ID'; }, 2000);
-      showGlobalToast('UPI ID copied to clipboard!');
+      showGlobalToast('UPI ID (7019886914@axl) copied to clipboard!');
     }).catch(() => {
       vpaCopyBtn.textContent = 'Copied!';
       setTimeout(() => { vpaCopyBtn.textContent = 'Copy UPI ID'; }, 2000);
