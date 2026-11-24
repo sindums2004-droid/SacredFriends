@@ -95,8 +95,8 @@
 .hero-logo-img {
   height: 64px;
   width: auto;
-  border-radius: 12px;
-  filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.55)) drop-shadow(0 0 40px rgba(212, 175, 55, 0.3));
+  background: transparent;
+  filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6)) drop-shadow(0 0 40px rgba(212, 175, 55, 0.35));
   transition: transform 0.3s ease;
   animation: logoGlowPulse 4s ease-in-out infinite alternate;
 }
@@ -115,7 +115,7 @@
 .footer-logo-img {
   height: 44px;
   width: auto;
-  border-radius: 8px;
+  background: transparent;
   filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.45));
   object-fit: contain;
 }

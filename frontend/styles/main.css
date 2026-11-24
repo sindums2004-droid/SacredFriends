@@ -263,9 +263,9 @@ body.hero-active .ambient-glow-layer {
 .brand-logo {
   height: 28px;
   width: auto;
-  border-radius: 6px;
+  background: transparent;
   object-fit: contain;
-  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
   transition: transform var(--transition-fast), filter var(--transition-fast);
 }
 
