@@ -224,14 +224,6 @@
   color: var(--color-warm-ivory);
 }
 
-.mockup-picker-hint {
-  font-size: 0.72rem;
-  color: var(--color-gold-base);
-  font-family: var(--font-mono);
-  letter-spacing: 0.03em;
-  opacity: 0.85;
-}
-
 .mockup-hidden-select {
   display: none;
 }
