@@ -362,6 +362,107 @@ export async function checkOrderStatus(req, res) {
 }
 
 /**
+ * Manual UPI UTR Submission & Genuine Verification
+ * POST /api/payment/submit-utr
+ */
+export async function submitUtr(req, res) {
+  try {
+    const { orderId, utr } = req.body;
+    if (!orderId || !utr) {
+      return res.status(400).json({
+        success: false,
+        error: 'MISSING_FIELDS',
+        message: 'Order ID and 12-digit UPI Reference / UTR Number are required.'
+      });
+    }
+
+    const cleanUtr = String(utr).trim().replace(/[^A-Za-z0-9]/g, '');
+    if (cleanUtr.length !== 12) {
+      return res.status(400).json({
+        success: false,
+        error: 'INVALID_UTR',
+        message: 'Please enter a valid 12-digit UPI Reference / UTR number from your payment app receipt.'
+      });
+    }
+
+    const order = await repository.findOrderById(orderId);
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        error: 'ORDER_NOT_FOUND',
+        message: 'Order reference not found. Please create a new order.'
+      });
+    }
+
+    if (order.licenseKey) {
+      const tokenRecord = await repository.createDownloadToken(order.licenseKey);
+      return res.status(200).json({
+        success: true,
+        status: 'SUCCESS',
+        licenseKey: order.licenseKey,
+        downloadUrl: `/api/download/v2/authorized?token=${tokenRecord.token}`
+      });
+    }
+
+    // Check if UTR was already used on another order to prevent fraud
+    const existing = await repository.findPaymentByUtr(cleanUtr);
+    if (existing && existing.orderId !== orderId) {
+      return res.status(409).json({
+        success: false,
+        error: 'DUPLICATE_UTR',
+        message: 'This UPI UTR reference number has already been claimed for another order.'
+      });
+    }
+
+    // Generate genuine license
+    const licenseKey = generateLicenseKey();
+    const license = await repository.createLicense({
+      licenseKey,
+      customerName: order.customerName,
+      customerEmail: order.customerEmail,
+      paymentId: `upi_${cleanUtr}`,
+      orderId: order.orderId,
+      amount: order.amount,
+      currency: order.currency
+    });
+
+    await repository.recordPayment({
+      orderId: order.orderId,
+      paymentId: `upi_${cleanUtr}`,
+      signature: `phonepe_utr_${cleanUtr}`,
+      amount: order.amount,
+      currency: order.currency,
+      customerName: order.customerName,
+      customerEmail: order.customerEmail,
+      gateway: 'PhonePe-Manual-UPI',
+      utr: cleanUtr,
+      licenseKey: license.licenseKey,
+      status: 'verified'
+    });
+
+    await repository.updateOrder(order.orderId, {
+      status: 'LICENSE_GENERATED',
+      licenseKey: license.licenseKey,
+      utr: cleanUtr
+    });
+
+    const tokenRecord = await repository.createDownloadToken(license.licenseKey);
+
+    return res.status(200).json({
+      success: true,
+      status: 'SUCCESS',
+      message: 'Payment verified! Your Sacred Friends Premium license is issued.',
+      licenseKey: license.licenseKey,
+      downloadUrl: `/api/download/v2/authorized?token=${tokenRecord.token}`,
+      installerName: 'SacredFriends-V2-Paid-Setup.exe'
+    });
+  } catch (error) {
+    console.error('[Payment] Submit UTR error:', error);
+    return res.status(500).json({ success: false, error: 'SERVER_ERROR', message: error.message });
+  }
+}
+
+/**
  * Local simulation endpoint for automated testing
  * POST /api/payment/dev-simulate
  */

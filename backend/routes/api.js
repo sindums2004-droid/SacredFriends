@@ -4,6 +4,7 @@ import {
   verifyPayment,
   handleYoupiWebhook,
   checkOrderStatus,
+  submitUtr,
   simulatePaymentSuccess
 } from '../controllers/paymentController.js';
 import {
@@ -31,6 +32,7 @@ router.get('/download/v2/authorized', downloadV2Authorized);
 // Payment & Orders (YouPI-PG Gateway Integration)
 router.post('/payment/create-order', createOrder);
 router.post('/payment/verify', verifyPayment);
+router.post('/payment/submit-utr', submitUtr);
 router.post('/payment/youpi-webhook', handleYoupiWebhook);
 router.get('/payment/status/:orderId', checkOrderStatus);
 router.post('/payment/dev-simulate', simulatePaymentSuccess);

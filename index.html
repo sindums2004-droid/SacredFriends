@@ -933,20 +933,34 @@
           <span class="checkout-timer-pill" id="checkout-timer">10:00</span>
         </div>
 
-        <!-- Action Buttons -->
-        <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-top: 1.15rem;">
-          <button type="button" class="btn btn-primary" id="btn-verify-upi-payment" style="width: 100%;">
-            ✓ Verify Payment / I Have Paid
-          </button>
-          
+        <!-- UTR Entry Form for Genuine Payment Verification -->
+        <div style="background: rgba(6, 11, 26, 0.85); border: 1px solid var(--border-gold-subtle); border-radius: var(--radius-md); padding: 1rem; margin-top: 1rem; text-align: left;">
+          <label class="diag-label" for="checkout-utr-input" style="font-size: 0.8rem; color: var(--color-warm-ivory); margin-bottom: 0.4rem; display: block;">
+            Enter 12-Digit UPI Transaction ID / UTR:
+          </label>
           <div style="display: flex; gap: 0.5rem;">
-            <a id="btn-open-upi-app" class="btn btn-secondary btn-sm" href="#" style="flex: 1; text-align: center;">
-              Open in UPI App ↗
-            </a>
-            <button type="button" id="btn-back-to-form" class="btn btn-secondary btn-sm" style="flex: 1;">
-              ← Change Details
+            <input type="text" id="checkout-utr-input" class="diag-input" placeholder="e.g. 432198765432" maxlength="12" style="font-family: var(--font-mono); font-size: 0.9rem; letter-spacing: 0.05em; text-transform: uppercase;" />
+            <button type="button" class="btn btn-primary btn-sm" id="btn-submit-utr" style="white-space: nowrap; padding: 0.5rem 1rem;">
+              Verify UTR
             </button>
           </div>
+          <span style="font-size: 0.72rem; color: #94A3B8; display: block; margin-top: 0.45rem; line-height: 1.4;">
+            Once you transfer ₹499 via PhonePe/GPay, find the 12-digit UTR on your transaction screen and enter it here to verify payment and claim your license.
+          </span>
+          <div id="checkout-utr-alert" style="margin-top: 0.6rem; font-size: 0.8rem; display: none; padding: 0.4rem 0.65rem; border-radius: 6px;"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+          <a id="btn-open-upi-app" class="btn btn-secondary btn-sm" href="#" style="flex: 1; text-align: center;">
+            Open in UPI App ↗
+          </a>
+          <button type="button" id="btn-check-gateway-status" class="btn btn-secondary btn-sm" style="flex: 1;">
+            Check Status
+          </button>
+          <button type="button" id="btn-back-to-form" class="btn btn-secondary btn-sm" style="flex: 0.8;">
+            ← Back
+          </button>
         </div>
       </div>
 

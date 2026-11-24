@@ -263,6 +263,20 @@ export const repository = {
     return fallbackStore.payments.find(p => p.paymentId === paymentId) || null;
   },
 
+  async findPaymentByUtr(utr) {
+    if (!utr) return null;
+    if (isMongoConnected) {
+      try {
+        const PaymentModel = mongoose.model('Payment');
+        const doc = await PaymentModel.findOne({ utr }).lean();
+        if (doc) return doc;
+      } catch (e) {
+        console.error('[DB] Mongo findPaymentByUtr error:', e.message);
+      }
+    }
+    return fallbackStore.payments.find(p => p.utr === utr) || null;
+  },
+
   // Protected Download Tokens
   async createDownloadToken(licenseKey) {
     const token = 'SF_DL_' + Date.now() + '_' + Math.random().toString(36).substring(2, 12) + Math.random().toString(36).substring(2, 12);

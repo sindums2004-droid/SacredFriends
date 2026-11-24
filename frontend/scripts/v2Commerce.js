@@ -20,11 +20,13 @@ export function initV2Commerce() {
   const stageSuccess = document.getElementById('checkout-stage-success');
 
   // Stage 2 QR elements
-  const qrCanvas = document.getElementById('checkout-qr-canvas');
   const orderIdDisplay = document.getElementById('checkout-order-id-display');
   const vpaCopyBtn = document.getElementById('btn-copy-vpa');
   const vpaTextEl = document.getElementById('checkout-vpa-text');
-  const verifyPaymentBtn = document.getElementById('btn-verify-upi-payment');
+  const utrInput = document.getElementById('checkout-utr-input');
+  const submitUtrBtn = document.getElementById('btn-submit-utr');
+  const utrAlertEl = document.getElementById('checkout-utr-alert');
+  const checkGatewayBtn = document.getElementById('btn-check-gateway-status');
   const openUpiAppBtn = document.getElementById('btn-open-upi-app');
   const backToFormBtn = document.getElementById('btn-back-to-form');
   const timerEl = document.getElementById('checkout-timer');
@@ -348,42 +350,92 @@ export function initV2Commerce() {
     }
   });
 
-  // Verify Payment / I Have Paid Button
-  verifyPaymentBtn?.addEventListener('click', async () => {
-    if (!currentOrderId) return;
+  // Helper to show UTR alert
+  function showUtrAlert(msg, type = 'error') {
+    if (!utrAlertEl) return;
+    utrAlertEl.style.display = 'block';
+    if (type === 'error') {
+      utrAlertEl.style.background = 'rgba(244, 63, 94, 0.15)';
+      utrAlertEl.style.border = '1px solid rgba(244, 63, 94, 0.4)';
+      utrAlertEl.style.color = '#FDA4AF';
+      utrAlertEl.innerHTML = `⚠️ ${msg}`;
+    } else if (type === 'pending') {
+      utrAlertEl.style.background = 'rgba(245, 158, 11, 0.15)';
+      utrAlertEl.style.border = '1px solid rgba(245, 158, 11, 0.4)';
+      utrAlertEl.style.color = '#FDE68A';
+      utrAlertEl.innerHTML = `⏳ ${msg}`;
+    }
+  }
 
-    verifyPaymentBtn.disabled = true;
-    verifyPaymentBtn.textContent = 'Checking Payment Status...';
+  // 1. Submit UTR & Genuine Verification
+  submitUtrBtn?.addEventListener('click', async () => {
+    if (!currentOrderId) {
+      showUtrAlert('Please generate an order first.');
+      return;
+    }
+
+    const rawUtr = utrInput?.value.trim() || '';
+    const cleanUtr = rawUtr.replace(/[^A-Za-z0-9]/g, '');
+
+    if (cleanUtr.length !== 12) {
+      showUtrAlert('Please enter a valid 12-digit UPI UTR / Reference Number from your PhonePe/GPay receipt.');
+      return;
+    }
+
+    submitUtrBtn.disabled = true;
+    submitUtrBtn.textContent = 'Verifying...';
 
     try {
-      // 1. Check live status
+      const res = await fetch('/api/payment/submit-utr', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: currentOrderId, utr: cleanUtr })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.status === 'SUCCESS' && data.licenseKey) {
+        handlePaymentSuccess(data);
+      } else {
+        showUtrAlert(data.message || 'Payment could not be verified. Please double-check your 12-digit UTR.');
+      }
+    } catch (err) {
+      console.error('[Submit UTR] Error:', err);
+      showUtrAlert('Network error while verifying UTR. Please try again.');
+    } finally {
+      submitUtrBtn.disabled = false;
+      submitUtrBtn.textContent = 'Verify UTR';
+    }
+  });
+
+  utrInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      submitUtrBtn?.click();
+    }
+  });
+
+  // 2. Check Gateway Status Button (Authoritative Polling Only — Never Simulates Free Access)
+  checkGatewayBtn?.addEventListener('click', async () => {
+    if (!currentOrderId) return;
+
+    checkGatewayBtn.disabled = true;
+    checkGatewayBtn.textContent = 'Checking...';
+
+    try {
       const res = await fetch(`/api/payment/status/${encodeURIComponent(currentOrderId)}`);
       const data = await res.json();
 
       if (data.status === 'SUCCESS' && data.licenseKey) {
         handlePaymentSuccess(data);
-        return;
-      }
-
-      // 2. If running locally or in simulation, trigger simulated verification
-      const simRes = await fetch('/api/payment/dev-simulate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId: currentOrderId })
-      });
-
-      if (simRes.ok) {
-        const simData = await simRes.json();
-        handlePaymentSuccess(simData);
       } else {
-        alert('Payment confirmation is still pending. If you just transferred funds, please allow a moment for confirmation.');
+        showUtrAlert('Payment not detected yet. Please transfer ₹499 via PhonePe and enter your 12-digit UTR above to claim your license.', 'pending');
       }
     } catch (err) {
-      console.error('[Verify Payment] Error:', err);
-      alert('Unable to verify payment status: ' + err.message);
+      console.error('[Check Status] Error:', err);
+      showUtrAlert('Unable to check payment status.');
     } finally {
-      verifyPaymentBtn.disabled = false;
-      verifyPaymentBtn.textContent = '✓ Verify Payment / I Have Paid';
+      checkGatewayBtn.disabled = false;
+      checkGatewayBtn.textContent = 'Check Status';
     }
   });
 
