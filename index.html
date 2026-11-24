@@ -282,28 +282,32 @@
               </div>
             </div>
 
-            <!-- Companion Selector inside Mockup -->
-            <div style="text-align: center; margin-top: 1rem; padding-bottom: 0.5rem;">
-              <label for="mock-companion-select" style="font-size: 0.82rem; color: var(--color-soft-cream); margin-right: 0.5rem;">
-                Preview Companion on Screen:
-              </label>
-              <select id="mock-companion-select" style="background: rgba(8, 14, 32, 0.95); color: var(--color-gold-light); border: 1px solid var(--border-gold-subtle); padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 0.82rem;">
-                <option value="krishna">Krishna</option>
-                <option value="ganesha">Ganesha</option>
-                <option value="hanuman">Hanuman</option>
-                <option value="shiva">Shiva</option>
-                <option value="durga">Durga Maa</option>
-                <option value="saraswati">Saraswati Devi</option>
-                <option value="lakshmi">Lakshmi Devi</option>
-                <option value="radha">Little Radha</option>
-                <option value="rama">Little Rama</option>
-                <option value="sita">Sita Devi</option>
-                <option value="kartikeya">Kartikeya</option>
-                <option value="ayyappa">Ayyappa Swamy</option>
-                <option value="venkateswara">Lord Venkateswara</option>
-                <option value="narasimha">Narasimha Swamy</option>
-                <option value="parvati">Parvati Devi</option>
-              </select>
+            <!-- Interactive React Bits AnimatedList Companion Selector -->
+            <div class="mockup-companion-picker">
+              <div class="mockup-picker-header">
+                <span class="mockup-picker-title">
+                  <span class="gold-shimmer">✦ Choose Companion Presence</span>
+                  <span class="mockup-picker-hint">Hover, click, or use ↑ ↓ keys</span>
+                </span>
+                <select id="mock-companion-select" class="mockup-hidden-select" aria-label="Select companion">
+                  <option value="krishna">Krishna</option>
+                  <option value="ganesha">Ganesha</option>
+                  <option value="hanuman">Hanuman</option>
+                  <option value="shiva">Shiva</option>
+                  <option value="durga">Durga Maa</option>
+                  <option value="saraswati">Saraswati Devi</option>
+                  <option value="lakshmi">Lakshmi Devi</option>
+                  <option value="radha">Little Radha</option>
+                  <option value="rama">Little Rama</option>
+                  <option value="sita">Sita Devi</option>
+                  <option value="kartikeya">Kartikeya</option>
+                  <option value="ayyappa">Ayyappa Swamy</option>
+                  <option value="venkateswara">Lord Venkateswara</option>
+                  <option value="narasimha">Narasimha Swamy</option>
+                  <option value="parvati">Parvati Devi</option>
+                </select>
+              </div>
+              <div id="companion-animated-list-mount" class="companion-animated-list-mount"></div>
             </div>
           </div>
 

@@ -7,6 +7,7 @@ import './styles/main.css';
 import './styles/cinematic.css';
 import './components/CircularCarousel.css';
 import './components/ReflectiveCard.css';
+import './components/AnimatedList.css';
 
 import { initNavbar } from './scripts/navbar.js';
 import { initCanvasParticles } from './scripts/canvasParticles.js';
@@ -22,6 +23,7 @@ import { initHeroLightRays } from './scripts/lightRays.js';
 import { initContact } from './scripts/contact.js';
 import { initContactCarousel } from './scripts/contactCarousel.js';
 import { initReflectiveCards } from './scripts/reflectiveCard.js';
+import { initExperienceAnimatedList } from './scripts/animatedList.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const main = document.getElementById('main-content');
@@ -46,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initContact();
   initContactCarousel();
   initReflectiveCards();
+  initExperienceAnimatedList();
 
   console.log('🕉️ Sacred Friends by Q-CUBIC — Cinematic Divine Journey Engine & Sacred Audio Active.');
 });
