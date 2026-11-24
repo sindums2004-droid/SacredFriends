@@ -321,10 +321,10 @@ export function initV2Commerce() {
         orderIdDisplay.textContent = currentOrderId;
       }
 
-      // Generate authentic UPI payment URI string with official payee
+      // Generate authentic UPI payment URI string with official payee and fixed auto 499 amount
       const vpa = '7019886914@axl';
       const payeeName = 'VENKATA SAI PRUTHVI A V';
-      const upiString = `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(payeeName)}&am=${orderData.displayAmount || currentAmount}&cu=INR&tn=${encodeURIComponent(currentOrderId)}&mode=02&purpose=00`;
+      const upiString = `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(payeeName)}&am=499&cu=INR&tn=${encodeURIComponent(currentOrderId || 'Sacred Friends Premium')}&mode=02&purpose=00`;
 
       // Wire deep link for mobile UPI app launch
       if (openUpiAppBtn) {
