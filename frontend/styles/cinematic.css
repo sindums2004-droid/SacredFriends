@@ -1672,10 +1672,10 @@
 }
 
 .checkout-qr-card {
-  background: #000000;
+  background: #ffffff;
   padding: 8px;
-  border-radius: 18px;
-  border: 2px solid var(--border-gold-bright);
+  border-radius: 16px;
+  border: 3px solid #d4af37;
   box-shadow: 0 0 35px rgba(212, 175, 55, 0.35), 0 10px 25px rgba(0, 0, 0, 0.6);
   position: relative;
   display: inline-flex;
@@ -1684,10 +1684,10 @@
 }
 
 #checkout-qr-phonepe-img {
-  max-width: 250px;
+  max-width: 220px;
   width: 100%;
   height: auto;
-  border-radius: 12px;
+  border-radius: 10px;
   display: block;
 }
 
@@ -1758,10 +1758,12 @@
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
   }
+
   70% {
     transform: scale(1);
     box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
   }
+
   100% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
