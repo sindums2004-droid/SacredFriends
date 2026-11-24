@@ -253,10 +253,25 @@ body.hero-active .ambient-glow-layer {
 .nav-brand {
   display: flex;
   align-items: center;
+  gap: 0.65rem;
   justify-self: start;
   text-decoration: none;
   flex-shrink: 0;
   padding: 0;
+}
+
+.brand-logo {
+  height: 28px;
+  width: auto;
+  border-radius: 6px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
+  transition: transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.nav-brand:hover .brand-logo {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 14px rgba(255, 215, 0, 0.75));
 }
 
 .brand-title {

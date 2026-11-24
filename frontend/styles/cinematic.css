@@ -84,6 +84,42 @@
   margin: 0 auto;
 }
 
+/* Hero Brand Emblem Logo */
+.hero-brand-emblem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 0.65rem;
+}
+
+.hero-logo-img {
+  height: 64px;
+  width: auto;
+  border-radius: 12px;
+  filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.55)) drop-shadow(0 0 40px rgba(212, 175, 55, 0.3));
+  transition: transform 0.3s ease;
+  animation: logoGlowPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlowPulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 16px rgba(212, 175, 55, 0.45));
+  }
+  100% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 28px rgba(255, 215, 0, 0.8));
+  }
+}
+
+.footer-logo-img {
+  height: 44px;
+  width: auto;
+  border-radius: 8px;
+  filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.45));
+  object-fit: contain;
+}
+
 /* Storytelling Headers */
 .realm-tagline-badge {
   display: inline-flex;
