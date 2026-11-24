@@ -324,18 +324,6 @@ export function initV2Commerce() {
       const payeeName = 'VENKATA SAI PRUTHVI A V';
       const upiString = `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(payeeName)}&am=${orderData.displayAmount || currentAmount}&cu=INR&tn=${encodeURIComponent(currentOrderId)}&mode=02&purpose=00`;
 
-      // Render crisp in-modal QR code on canvas
-      if (qrCanvas) {
-        await QRCode.toCanvas(qrCanvas, upiString, {
-          width: 220,
-          margin: 1,
-          color: {
-            dark: '#040714',
-            light: '#ffffff'
-          }
-        });
-      }
-
       // Wire deep link for mobile UPI app launch
       if (openUpiAppBtn) {
         openUpiAppBtn.href = upiString;
@@ -404,38 +392,6 @@ export function initV2Commerce() {
     stopPolling();
     stopCountdown();
     showStage('form');
-  });
-
-  // QR View Switcher (Dynamic ₹499 QR vs PhonePe Standee)
-  const btnQrDynamic = document.getElementById('btn-qr-dynamic');
-  const btnQrPhonepe = document.getElementById('btn-qr-phonepe');
-  const qrDynamicWrap = document.getElementById('checkout-qr-dynamic-wrap');
-  const qrPhonepeImg = document.getElementById('checkout-qr-phonepe-img');
-
-  btnQrDynamic?.addEventListener('click', () => {
-    btnQrDynamic.classList.add('active');
-    btnQrDynamic.style.background = 'linear-gradient(135deg, rgba(212, 175, 55, 0.35) 0%, rgba(254, 240, 138, 0.2) 100%)';
-    btnQrDynamic.style.color = 'var(--color-gold-light)';
-    btnQrPhonepe?.classList.remove('active');
-    if (btnQrPhonepe) {
-      btnQrPhonepe.style.background = 'transparent';
-      btnQrPhonepe.style.color = 'var(--color-muted-stone)';
-    }
-    if (qrDynamicWrap) qrDynamicWrap.style.display = 'block';
-    if (qrPhonepeImg) qrPhonepeImg.style.display = 'none';
-  });
-
-  btnQrPhonepe?.addEventListener('click', () => {
-    btnQrPhonepe.classList.add('active');
-    btnQrPhonepe.style.background = 'linear-gradient(135deg, rgba(103, 58, 183, 0.4) 0%, rgba(147, 51, 234, 0.25) 100%)';
-    btnQrPhonepe.style.color = '#d8b4fe';
-    btnQrDynamic?.classList.remove('active');
-    if (btnQrDynamic) {
-      btnQrDynamic.style.background = 'transparent';
-      btnQrDynamic.style.color = 'var(--color-muted-stone)';
-    }
-    if (qrDynamicWrap) qrDynamicWrap.style.display = 'none';
-    if (qrPhonepeImg) qrPhonepeImg.style.display = 'block';
   });
 
   // Copy UPI VPA
