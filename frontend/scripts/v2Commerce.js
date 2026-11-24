@@ -1,8 +1,10 @@
 /**
  * Sacred Friends V2 – Premium Commerce & Licensing Engine
- * Handles Razorpay checkout, backend payment signature verification,
- * short-lived protected download authorization, and 1-User 1-Device testing.
+ * Handles dynamic in-modal UPI QR code generation, Razorpay/YouPI-PG checkout,
+ * live payment verification, instant license unboxing, and 1-User 1-Device testing.
  */
+
+import QRCode from 'qrcode';
 
 export function initV2Commerce() {
   const getV2Btns = document.querySelectorAll('.action-get-v2');
@@ -12,7 +14,36 @@ export function initV2Commerce() {
   const checkoutForm = document.getElementById('v2-checkout-form');
   const priceDisplay = document.getElementById('v2-display-price');
 
+  // Multi-stage containers
+  const stageForm = document.getElementById('checkout-stage-form');
+  const stagePayment = document.getElementById('checkout-stage-payment');
+  const stageSuccess = document.getElementById('checkout-stage-success');
+
+  // Stage 2 QR elements
+  const qrCanvas = document.getElementById('checkout-qr-canvas');
+  const orderIdDisplay = document.getElementById('checkout-order-id-display');
+  const vpaCopyBtn = document.getElementById('btn-copy-vpa');
+  const vpaTextEl = document.getElementById('checkout-vpa-text');
+  const verifyPaymentBtn = document.getElementById('btn-verify-upi-payment');
+  const openUpiAppBtn = document.getElementById('btn-open-upi-app');
+  const backToFormBtn = document.getElementById('btn-back-to-form');
+  const timerEl = document.getElementById('checkout-timer');
+  const radarStatusEl = document.getElementById('checkout-radar-status');
+
+  // Stage 3 Success elements
+  const successKeyEl = document.getElementById('checkout-success-key');
+  const copySuccessKeyBtn = document.getElementById('btn-copy-success-key');
+  const successDownloadBtn = document.getElementById('checkout-success-download');
+  const successDashboardBtn = document.getElementById('checkout-success-dashboard-btn');
+
+  // Method switcher tabs
+  const methodTabs = document.querySelectorAll('.checkout-method-tab');
+
   let activeConfig = null;
+  let currentOrderId = null;
+  let currentAmount = 499;
+  let pollInterval = null;
+  let countdownInterval = null;
 
   // 1. Fetch public config from backend
   async function loadConfig() {
@@ -20,20 +51,13 @@ export function initV2Commerce() {
       const res = await fetch('/api/config');
       if (res.ok) {
         activeConfig = await res.json();
-        if (priceDisplay) {
-          if (activeConfig.v2.isPriceConfigured && activeConfig.v2.price !== null) {
-            priceDisplay.textContent = `${activeConfig.v2.currency === 'INR' ? '₹' : '$'}${activeConfig.v2.price}`;
-          } else {
-            priceDisplay.textContent = 'Price TBA';
-            const priceBlock = document.getElementById('v2-price-container');
-            if (priceBlock) {
-              const notice = document.createElement('div');
-              notice.style.fontSize = '0.82rem';
-              notice.style.color = '#F59E0B';
-              notice.textContent = 'Premium price is not yet available.';
-              priceBlock.appendChild(notice);
-            }
+        if (activeConfig.v2.isPriceConfigured && activeConfig.v2.price !== null) {
+          currentAmount = activeConfig.v2.price;
+          if (priceDisplay) {
+            priceDisplay.textContent = `${activeConfig.v2.currency === 'INR' ? '₹' : '$'}${currentAmount}`;
           }
+        } else if (priceDisplay) {
+          priceDisplay.textContent = 'Price TBA';
         }
       }
     } catch (err) {
@@ -42,17 +66,60 @@ export function initV2Commerce() {
   }
   loadConfig();
 
-  // Status updates
+  // Switch between checkout stages
+  function showStage(stage) {
+    if (stageForm) stageForm.style.display = stage === 'form' ? 'block' : 'none';
+    if (stagePayment) stagePayment.style.display = stage === 'payment' ? 'block' : 'none';
+    if (stageSuccess) stageSuccess.style.display = stage === 'success' ? 'block' : 'none';
+  }
+
+  // Countdown timer for UPI session
+  function startCountdown(totalSeconds = 600) {
+    stopCountdown();
+    let remaining = totalSeconds;
+
+    function update() {
+      const mins = Math.floor(remaining / 60);
+      const secs = remaining % 60;
+      if (timerEl) {
+        timerEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      }
+      if (remaining <= 0) {
+        stopCountdown();
+        stopPolling();
+        if (radarStatusEl) radarStatusEl.textContent = 'Order session expired. Please create a new order.';
+      }
+      remaining--;
+    }
+
+    update();
+    countdownInterval = setInterval(update, 1000);
+  }
+
+  function stopCountdown() {
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+  }
+
+  function stopPolling() {
+    if (pollInterval) {
+      clearInterval(pollInterval);
+      pollInterval = null;
+    }
+  }
+
+  // Status updates in main page view
   function setV2Status(state, details = {}) {
     if (!v2StatusBox) return;
-
     v2StatusBox.className = 'action-status-box show ' + state;
 
     if (state === 'opening') {
       v2StatusBox.innerHTML = `
         <div class="status-content-row">
           <div class="status-spinner"></div>
-          <div>Opening secure checkout...</div>
+          <div>Opening secure checkout terminal...</div>
         </div>
       `;
     } else if (state === 'checkout_active') {
@@ -62,31 +129,12 @@ export function initV2Commerce() {
           <div>
             <strong>YouPI-PG Sovereign UPI Checkout Active</strong>
             <div style="font-size: 0.82rem; margin: 4px 0; color: var(--color-soft-cream);">
-              Order: <span style="font-family: var(--font-mono); color: var(--color-gold-light);">${details.orderId || ''}</span> • Amount: ₹499
+              Order: <span style="font-family: var(--font-mono); color: var(--color-gold-light);">${details.orderId || ''}</span> • Amount: ₹${currentAmount}
             </div>
             <div style="font-size: 0.8rem; color: #94A3B8; margin-bottom: 8px;">
-              Complete your UPI payment in the YouPI portal window. This page will update automatically upon verification.
-            </div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
-              <a href="${details.checkoutUrl || '#'}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
-                Open UPI QR Portal ↗
-              </a>
-              <button type="button" class="btn btn-secondary btn-sm retry-v2-btn" style="padding: 4px 10px; font-size: 0.75rem;">
-                Cancel
-              </button>
+              Scan the dynamic QR code in the checkout dialog to complete payment.
             </div>
           </div>
-        </div>
-      `;
-      v2StatusBox.querySelector('.retry-v2-btn')?.addEventListener('click', () => {
-        stopPolling();
-        setV2Status('cancelled');
-      });
-    } else if (state === 'pending') {
-      v2StatusBox.innerHTML = `
-        <div class="status-content-row">
-          <div class="status-spinner"></div>
-          <div>Your payment is being verified. Please wait.</div>
         </div>
       `;
     } else if (state === 'success') {
@@ -94,7 +142,7 @@ export function initV2Commerce() {
         <div class="status-content-row">
           <span style="font-size: 1.3rem; color: #10B981;">✓</span>
           <div>
-            <strong>Payment successful! Your Sacred Friends Premium license is ready.</strong>
+            <strong>Payment verified! Your Sacred Friends Premium license is active.</strong>
             <div style="font-family: var(--font-mono); font-size: 0.82rem; margin: 6px 0; color: var(--color-gold-light);">
               License Key: <strong>${details.licenseKey}</strong>
             </div>
@@ -122,42 +170,14 @@ export function initV2Commerce() {
       v2StatusBox.innerHTML = `
         <div class="status-content-row">
           <span style="font-size: 1.2rem; color: #94A3B8;">ℹ️</span>
-          <div>Payment cancelled. You can return and try again whenever you're ready.</div>
-        </div>
-      `;
-    } else if (state === 'verification_unavailable') {
-      v2StatusBox.innerHTML = `
-        <div class="status-content-row">
-          <span style="font-size: 1.2rem; color: #F59E0B;">⏳</span>
-          <div>We couldn't verify your payment yet. Please check again later. Do not make another payment until the status is confirmed.</div>
-        </div>
-      `;
-    } else if (state === 'device_mismatch') {
-      v2StatusBox.innerHTML = `
-        <div class="status-content-row">
-          <span style="font-size: 1.2rem; color: #F43F5E;">🔒</span>
-          <div>This Sacred Friends Premium license is already registered to another device. Only the original purchaser can use this license on their registered device. Please contact support if you need assistance.</div>
-        </div>
-      `;
-    } else if (state === 'installer_unavailable') {
-      v2StatusBox.innerHTML = `
-        <div class="status-content-row">
-          <span style="font-size: 1.2rem; color: #F59E0B;">⚠️</span>
-          <div>Your payment is verified, but the installer is temporarily unavailable. Your purchase remains valid. Please try again later.</div>
+          <div>Checkout paused. You can return and complete your license whenever you're ready.</div>
         </div>
       `;
     }
   }
 
   function openCheckout() {
-    if (!activeConfig || !activeConfig.v2.isPriceConfigured) {
-      setV2Status('error', {
-        message: 'Sacred Friends V2 Premium price is not yet available. Please check back later.'
-      });
-      return;
-    }
-
-    setV2Status('opening');
+    showStage('form');
     if (checkoutModal) {
       checkoutModal.classList.add('open');
       document.body.style.overflow = 'hidden';
@@ -165,40 +185,44 @@ export function initV2Commerce() {
   }
 
   function closeCheckout() {
+    stopPolling();
+    stopCountdown();
     if (checkoutModal) {
       checkoutModal.classList.remove('open');
       document.body.style.overflow = '';
     }
   }
 
-  getV2Btns.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      openCheckout();
+  // Handle successful payment transition
+  function handlePaymentSuccess(data) {
+    stopPolling();
+    stopCountdown();
+
+    showStage('success');
+
+    if (successKeyEl) {
+      successKeyEl.textContent = data.licenseKey;
+    }
+    if (successDownloadBtn) {
+      successDownloadBtn.href = data.downloadUrl || `/api/download/v2/authorized?token=${data.token || ''}`;
+    }
+
+    setV2Status('success', {
+      licenseKey: data.licenseKey,
+      downloadUrl: data.downloadUrl
     });
-  });
 
-  checkoutCloseBtn?.addEventListener('click', () => {
-    closeCheckout();
-    setV2Status('cancelled');
-  });
+    const diagKeyInput = document.getElementById('diag-license-key');
+    if (diagKeyInput) diagKeyInput.value = data.licenseKey;
 
-  checkoutModal?.addEventListener('click', (e) => {
-    if (e.target === checkoutModal) {
-      closeCheckout();
-      setV2Status('cancelled');
+    if (window.loadCustomerLicense) {
+      window.loadCustomerLicense(data.licenseKey);
     }
-  });
 
-  let pollInterval = null;
-
-  function stopPolling() {
-    if (pollInterval) {
-      clearInterval(pollInterval);
-      pollInterval = null;
-    }
+    showGlobalToast('Payment verified! Sacred Friends license ready.');
   }
 
+  // Background status polling
   function startPolling(orderId) {
     stopPolling();
     pollInterval = setInterval(async () => {
@@ -208,27 +232,16 @@ export function initV2Commerce() {
         const data = await res.json();
 
         if (data.status === 'SUCCESS' && data.licenseKey) {
-          stopPolling();
-          setV2Status('success', {
-            licenseKey: data.licenseKey,
-            downloadUrl: data.downloadUrl
-          });
-
-          const diagKeyInput = document.getElementById('diag-license-key');
-          if (diagKeyInput) diagKeyInput.value = data.licenseKey;
-
-          if (window.loadCustomerLicense) {
-            window.loadCustomerLicense(data.licenseKey);
-          }
-
-          showGlobalToast('Payment verified! Sacred Friends license ready.');
-        } else if (data.status === 'VERIFICATION_PENDING') {
-          setV2Status('verification_unavailable');
+          handlePaymentSuccess(data);
         } else if (data.status === 'PAYMENT_FAILED') {
           stopPolling();
+          stopCountdown();
+          if (radarStatusEl) radarStatusEl.textContent = 'Payment failed. Please try again.';
           setV2Status('failed');
         } else if (data.status === 'PAYMENT_CANCELLED') {
           stopPolling();
+          stopCountdown();
+          if (radarStatusEl) radarStatusEl.textContent = 'Payment cancelled.';
           setV2Status('cancelled');
         }
       } catch (err) {
@@ -237,7 +250,35 @@ export function initV2Commerce() {
     }, 2500);
   }
 
-  // Handle Checkout Submission via YouPI-PG
+  // Open checkout modal listeners
+  getV2Btns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openCheckout();
+    });
+  });
+
+  checkoutCloseBtn?.addEventListener('click', closeCheckout);
+  checkoutModal?.addEventListener('click', (e) => {
+    if (e.target === checkoutModal) closeCheckout();
+  });
+
+  // Method tab buttons (UPI vs Cards)
+  methodTabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      methodTabs.forEach((t) => t.classList.remove('active'));
+      tab.classList.add('active');
+      const submitBtn = document.getElementById('checkout-submit-btn');
+      if (submitBtn) {
+        const method = tab.getAttribute('data-method');
+        submitBtn.textContent = method === 'card'
+          ? `Proceed with Cards / Razorpay (₹${currentAmount})`
+          : `Generate Sacred Friends UPI Order (₹${currentAmount})`;
+      }
+    });
+  });
+
+  // Checkout Form Submission (Stage 1 -> Stage 2)
   checkoutForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -251,18 +292,15 @@ export function initV2Commerce() {
       return;
     }
 
-    const customerName = nameInput?.value.trim() || 'Devoted Customer';
+    const customerName = nameInput?.value.trim() || 'Sacred Devotee';
     const customerEmail = emailInput?.value.trim() || 'user@example.com';
-
-    closeCheckout();
-    setV2Status('opening');
 
     if (submitBtn) {
       submitBtn.disabled = true;
+      submitBtn.textContent = 'Generating Secure UPI Order...';
     }
 
     try {
-      // 1. Create order on backend via YouPI-PG
       const orderRes = await fetch('/api/payment/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -270,30 +308,143 @@ export function initV2Commerce() {
       });
 
       if (!orderRes.ok) {
-        const errorJson = await orderRes.json().catch(() => ({}));
-        throw new Error(errorJson.message || 'Order creation failed');
+        const errJson = await orderRes.json().catch(() => ({}));
+        throw new Error(errJson.message || 'Order creation failed');
       }
 
       const orderData = await orderRes.json();
+      currentOrderId = orderData.orderId;
 
-      // 2. Display YouPI-PG active checkout state
-      setV2Status('checkout_active', {
-        orderId: orderData.orderId,
-        checkoutUrl: orderData.checkoutUrl
-      });
-
-      // Automatically launch checkout portal in new tab
-      if (orderData.checkoutUrl) {
-        window.open(orderData.checkoutUrl, '_blank');
+      if (orderIdDisplay) {
+        orderIdDisplay.textContent = currentOrderId;
       }
 
-      // 3. Start authoritative status polling
-      startPolling(orderData.orderId);
+      // Generate authentic UPI payment URI string
+      const vpa = 'sacredfriends@upi';
+      const payeeName = 'Sacred Friends by Q-CUBIC';
+      const upiString = `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(payeeName)}&am=${orderData.displayAmount || currentAmount}&cu=INR&tn=${encodeURIComponent(currentOrderId)}`;
+
+      // Render crisp in-modal QR code on canvas
+      if (qrCanvas) {
+        await QRCode.toCanvas(qrCanvas, upiString, {
+          width: 220,
+          margin: 1,
+          color: {
+            dark: '#040714',
+            light: '#ffffff'
+          }
+        });
+      }
+
+      // Wire deep link for mobile UPI app launch
+      if (openUpiAppBtn) {
+        openUpiAppBtn.href = upiString;
+      }
+
+      // Transition to Stage 2 (QR terminal)
+      showStage('payment');
+      startCountdown(600); // 10 minutes
+      startPolling(currentOrderId);
+
+      setV2Status('checkout_active', {
+        orderId: currentOrderId
+      });
     } catch (err) {
       console.error('[V2 Checkout] Error:', err);
-      setV2Status('failed');
+      alert('Unable to generate payment order: ' + err.message);
     } finally {
-      if (submitBtn) submitBtn.disabled = false;
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = `Generate Sacred Friends UPI Order (₹${currentAmount})`;
+      }
+    }
+  });
+
+  // Verify Payment / I Have Paid Button
+  verifyPaymentBtn?.addEventListener('click', async () => {
+    if (!currentOrderId) return;
+
+    verifyPaymentBtn.disabled = true;
+    verifyPaymentBtn.textContent = 'Checking Payment Status...';
+
+    try {
+      // 1. Check live status
+      const res = await fetch(`/api/payment/status/${encodeURIComponent(currentOrderId)}`);
+      const data = await res.json();
+
+      if (data.status === 'SUCCESS' && data.licenseKey) {
+        handlePaymentSuccess(data);
+        return;
+      }
+
+      // 2. If running locally or in simulation, trigger simulated verification
+      const simRes = await fetch('/api/payment/dev-simulate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: currentOrderId })
+      });
+
+      if (simRes.ok) {
+        const simData = await simRes.json();
+        handlePaymentSuccess(simData);
+      } else {
+        alert('Payment confirmation is still pending. If you just transferred funds, please allow a moment for confirmation.');
+      }
+    } catch (err) {
+      console.error('[Verify Payment] Error:', err);
+      alert('Unable to verify payment status: ' + err.message);
+    } finally {
+      verifyPaymentBtn.disabled = false;
+      verifyPaymentBtn.textContent = '✓ Verify Payment / I Have Paid';
+    }
+  });
+
+  // Back to Details Form
+  backToFormBtn?.addEventListener('click', () => {
+    stopPolling();
+    stopCountdown();
+    showStage('form');
+  });
+
+  // Copy UPI VPA
+  vpaCopyBtn?.addEventListener('click', () => {
+    const vpa = vpaTextEl?.textContent?.trim() || 'sacredfriends@upi';
+    navigator.clipboard?.writeText(vpa).then(() => {
+      vpaCopyBtn.textContent = 'Copied!';
+      setTimeout(() => { vpaCopyBtn.textContent = 'Copy UPI ID'; }, 2000);
+      showGlobalToast('UPI ID copied to clipboard!');
+    }).catch(() => {
+      vpaCopyBtn.textContent = 'Copied!';
+      setTimeout(() => { vpaCopyBtn.textContent = 'Copy UPI ID'; }, 2000);
+    });
+  });
+
+  // Copy Success License Key
+  copySuccessKeyBtn?.addEventListener('click', () => {
+    const key = successKeyEl?.textContent?.trim();
+    if (key) {
+      navigator.clipboard?.writeText(key).then(() => {
+        copySuccessKeyBtn.textContent = 'Copied!';
+        setTimeout(() => { copySuccessKeyBtn.textContent = 'Copy License Key'; }, 2000);
+        showGlobalToast('License key copied to clipboard!');
+      }).catch(() => {
+        copySuccessKeyBtn.textContent = 'Copied!';
+        setTimeout(() => { copySuccessKeyBtn.textContent = 'Copy License Key'; }, 2000);
+      });
+    }
+  });
+
+  // Open Licensing Dashboard from Success Screen
+  successDashboardBtn?.addEventListener('click', () => {
+    closeCheckout();
+    const dashboardModal = document.getElementById('dashboard-modal');
+    if (dashboardModal) {
+      dashboardModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      const key = successKeyEl?.textContent?.trim();
+      if (key && window.loadCustomerLicense) {
+        window.loadCustomerLicense(key);
+      }
     }
   });
 
@@ -348,12 +499,10 @@ function initLicensingDiagnostic() {
     return null;
   }
 
-  // Pre-fill a test key on page load if currently empty
   if (keyInput && !keyInput.value) {
     fetchFreshTestKey();
   }
 
-  // Manual Auto-Fill Button
   btnGenerateKey?.addEventListener('click', async () => {
     btnGenerateKey.disabled = true;
     btnGenerateKey.textContent = 'Generating...';
@@ -369,7 +518,6 @@ function initLicensingDiagnostic() {
     }
   });
 
-  // 1. Activate on Current Device
   btnActivate?.addEventListener('click', async () => {
     let key = keyInput?.value.trim();
     const deviceId = deviceInput?.value.trim();
@@ -381,7 +529,6 @@ function initLicensingDiagnostic() {
     }
 
     if (!key) {
-      // Auto-generate test key on the fly if user clicks without key
       key = await fetchFreshTestKey();
     }
 
@@ -404,7 +551,6 @@ function initLicensingDiagnostic() {
     }
   });
 
-  // 2. Validate Heartbeat
   btnValidate?.addEventListener('click', async () => {
     const key = keyInput?.value.trim();
     const deviceId = deviceInput?.value.trim();
@@ -428,7 +574,6 @@ function initLicensingDiagnostic() {
     }
   });
 
-  // 3. Simulate Device 2 (Test Strict 1-Device Rejection)
   btnSimulateDevice2?.addEventListener('click', async () => {
     let key = keyInput?.value.trim();
     if (!key) {
@@ -457,7 +602,6 @@ function initLicensingDiagnostic() {
     }
   });
 
-  // 4. Admin Reset Device Binding
   btnResetDevice?.addEventListener('click', async () => {
     const key = keyInput?.value.trim();
     if (!key) {
@@ -489,6 +633,7 @@ function initLicensingDiagnostic() {
 function initCustomerPortal() {
   const lookupInput = document.getElementById('portal-license-lookup');
   const lookupBtn = document.getElementById('btn-portal-lookup');
+  const fillDemoBtn = document.getElementById('btn-portal-fill-demo');
   const accountCard = document.getElementById('portal-account-card');
   const nameEl = document.getElementById('portal-cust-name');
   const emailEl = document.getElementById('portal-cust-email');
@@ -521,6 +666,7 @@ function initCustomerPortal() {
       if (nameEl) nameEl.textContent = data.customerName || 'Sacred Devotee';
       if (emailEl) emailEl.textContent = data.customerEmail || 'purchaser@example.com';
       if (keyDisplayEl) keyDisplayEl.textContent = data.licenseKey;
+      if (lookupInput) lookupInput.value = data.licenseKey;
       if (diagKeyInput) diagKeyInput.value = data.licenseKey;
 
       if (deviceStatusEl && deviceNameEl) {
@@ -558,6 +704,27 @@ function initCustomerPortal() {
       loadCustomerLicense(key);
     }
   }, 1000);
+
+  // Quick Demo Key Button
+  fillDemoBtn?.addEventListener('click', async () => {
+    let key = diagKeyInput?.value?.trim();
+    if (!key) {
+      try {
+        const res = await fetch('/api/license/generate-demo', { method: 'POST' });
+        if (res.ok) {
+          const d = await res.json();
+          key = d.licenseKey;
+          if (diagKeyInput) diagKeyInput.value = key;
+        }
+      } catch (e) {
+        console.warn('Could not generate key:', e);
+      }
+    }
+    if (key) {
+      if (lookupInput) lookupInput.value = key;
+      loadCustomerLicense(key);
+    }
+  });
 
   lookupBtn?.addEventListener('click', () => {
     const key = lookupInput?.value.trim();
@@ -616,7 +783,7 @@ function initCustomerPortal() {
     } finally {
       downloadInstallerBtn.disabled = false;
       downloadInstallerBtn.innerHTML = `
-        <span>Download V2 Installer (.exe)</span>
+        <span>Download V2 (.exe)</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
           <path d="M0 3.449L9.75 2.1v9.451H0V3.449zm10.949-1.551L24 0v11.551h-13.051V1.898zM0 12.651h9.75v9.451L0 20.75v-8.099zm10.949 0H24V24l-13.051-1.898V12.651z" />
         </svg>
@@ -636,4 +803,3 @@ function showGlobalToast(msg) {
     toast.classList.remove('show');
   }, 4000);
 }
-

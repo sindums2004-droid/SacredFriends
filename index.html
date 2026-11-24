@@ -657,6 +657,10 @@
             <span>Access Dashboard</span>
           </button>
         </div>
+        <div style="margin-top: 0.85rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="font-size: 0.76rem; color: var(--color-muted-stone);">Quick Test:</span>
+          <button type="button" id="btn-portal-fill-demo" class="portal-quick-pill">✦ Load Active Demo License</button>
+        </div>
       </div>
 
       <!-- Customer Account Details Card -->
@@ -763,6 +767,28 @@
           </div>
         </div>
       </div>
+
+      <!-- Setup Instructions for Windows Devotees -->
+      <div class="dashboard-guide-strip">
+        <div class="dashboard-guide-step">
+          <span class="dashboard-step-num">Step 1 · Download Installer</span>
+          <p style="font-size: 0.8rem; color: var(--color-muted-stone); margin: 0; line-height: 1.5;">
+            Download <strong>SacredFriends-V2-Setup.exe</strong> directly via your verified portal license token above.
+          </p>
+        </div>
+        <div class="dashboard-guide-step">
+          <span class="dashboard-step-num">Step 2 · Enter License Key</span>
+          <p style="font-size: 0.8rem; color: var(--color-muted-stone); margin: 0; line-height: 1.5;">
+            Launch the app on Windows 11/10 and enter your <code style="color: var(--color-gold-light);">SF2-XXXX</code> key on the welcome prompt.
+          </p>
+        </div>
+        <div class="dashboard-guide-step">
+          <span class="dashboard-step-num">Step 3 · Offline Tranquility</span>
+          <p style="font-size: 0.8rem; color: var(--color-muted-stone); margin: 0; line-height: 1.5;">
+            Your hardware binds cryptographically to your 1 PC. Enjoy your living desktop companions 100% offline.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -814,43 +840,151 @@
 
   <!-- 3. YouPI-PG Sovereign UPI Checkout Modal -->
   <div id="checkout-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="checkout-modal-title">
-    <div class="modal-dialog" style="max-width: 520px;">
+    <div class="modal-dialog">
       <button type="button" id="checkout-close-btn" class="modal-close-btn" aria-label="Close dialog">&times;</button>
       
-      <div style="text-align: center; margin-bottom: 1.5rem;">
-        <span class="edition-badge badge-premium" style="position: static; display: inline-block; margin-bottom: 0.75rem;">Sovereign YouPI-PG Gateway</span>
-        <h2 id="checkout-modal-title" class="font-display" style="font-size: 1.5rem; color: var(--color-warm-ivory);">Sacred Friends by Q-CUBIC — Premium</h2>
-        <p style="font-size: 0.88rem; color: var(--color-gold-light); margin-top: 0.25rem;">₹499 &bull; One-Time UPI Payment (1 Windows Device)</p>
+      <!-- STAGE 1: ORDER CONFIGURATION & DEVOTEE DETAILS -->
+      <div id="checkout-stage-form" class="checkout-stage">
+        <div style="text-align: center; margin-bottom: 1.25rem;">
+          <span class="edition-badge badge-premium" style="position: static; display: inline-block; margin-bottom: 0.6rem;">Sovereign UPI &amp; Razorpay Gateway</span>
+          <h2 id="checkout-modal-title" class="font-display" style="font-size: 1.5rem; color: var(--color-warm-ivory);">Sacred Friends Premium Edition</h2>
+          <p style="font-size: 0.88rem; color: var(--color-gold-light); margin-top: 0.25rem;">₹499 &bull; One-Time Lifetime License (Single Windows PC)</p>
+        </div>
+
+        <!-- Payment Method Tabs -->
+        <div class="checkout-method-tabs" role="tablist">
+          <button type="button" class="checkout-method-tab active" data-method="upi" role="tab" aria-selected="true">
+            <span>⚡ Instant UPI QR / Apps</span>
+          </button>
+          <button type="button" class="checkout-method-tab" data-method="card" role="tab" aria-selected="false">
+            <span>💳 Cards / NetBanking</span>
+          </button>
+        </div>
+
+        <form id="v2-checkout-form">
+          <div class="diag-form-group">
+            <label class="diag-label" for="checkout-customer-name">Full Name:</label>
+            <input type="text" id="checkout-customer-name" class="diag-input" placeholder="Your Full Name" required />
+          </div>
+
+          <div class="diag-form-group">
+            <label class="diag-label" for="checkout-customer-email">Email Address (for License Key delivery):</label>
+            <input type="email" id="checkout-customer-email" class="diag-input" placeholder="your.email@example.com" required />
+          </div>
+
+          <div style="background: rgba(212, 175, 55, 0.08); border: 1px solid var(--border-gold-subtle); border-radius: var(--radius-sm); padding: 0.85rem; margin: 1.15rem 0; font-size: 0.8rem; line-height: 1.5; color: var(--color-soft-cream);">
+            <strong>Strict License Policy:</strong><br />
+            ONE PAYMENT = ONE PURCHASER = ONE USER = ONE WINDOWS DEVICE.<br />
+            Your personal license binds cryptographically to your registered Windows PC.
+          </div>
+
+          <div style="display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 1.35rem; font-size: 0.82rem; color: var(--color-soft-cream);">
+            <input type="checkbox" id="checkout-agree-policy" required style="margin-top: 3px;" />
+            <label for="checkout-agree-policy">
+              I confirm that I understand this license is valid for one user on one registered Windows PC only.
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg" id="checkout-submit-btn" style="width: 100%;">
+            Generate Sacred Friends UPI Order (₹499)
+          </button>
+        </form>
       </div>
 
-      <form id="v2-checkout-form">
-        <div class="diag-form-group">
-          <label class="diag-label" for="checkout-customer-name">Full Name:</label>
-          <input type="text" id="checkout-customer-name" class="diag-input" placeholder="Your Full Name" required />
+      <!-- STAGE 2: DYNAMIC IN-MODAL UPI QR CODE TERMINAL -->
+      <div id="checkout-stage-payment" class="checkout-stage" style="display: none; text-align: center;">
+        <div style="margin-bottom: 1rem;">
+          <span class="edition-badge badge-premium" style="position: static; display: inline-block; margin-bottom: 0.5rem;">Awaiting UPI Transfer</span>
+          <h2 class="font-display" style="font-size: 1.4rem; color: var(--color-warm-ivory); margin: 0;">Scan &amp; Pay ₹499</h2>
+          <div style="font-size: 0.82rem; color: #94A3B8; margin-top: 0.25rem;">
+            Order ID: <span id="checkout-order-id-display" style="font-family: var(--font-mono); color: var(--color-gold-light);">SF-ORD-...</span>
+          </div>
         </div>
 
-        <div class="diag-form-group">
-          <label class="diag-label" for="checkout-customer-email">Email Address (for License Key delivery):</label>
-          <input type="email" id="checkout-customer-email" class="diag-input" placeholder="your.email@example.com" required />
+        <!-- Dynamic QR Code Card -->
+        <div class="checkout-qr-container">
+          <div class="checkout-qr-card">
+            <canvas id="checkout-qr-canvas" class="checkout-qr-canvas" width="220" height="220"></canvas>
+            <div class="checkout-qr-emblem" aria-hidden="true">
+              <img src="/assets/sacred_friends_logo.png" alt="Sacred Friends" />
+            </div>
+          </div>
+          
+          <div class="checkout-supported-apps">
+            <span class="checkout-app-badge">Google Pay</span>
+            <span class="checkout-app-badge">PhonePe</span>
+            <span class="checkout-app-badge">Paytm</span>
+            <span class="checkout-app-badge">BHIM</span>
+            <span class="checkout-app-badge">Cred</span>
+          </div>
         </div>
 
-        <div style="background: rgba(212, 175, 55, 0.08); border: 1px solid var(--border-gold-subtle); border-radius: var(--radius-sm); padding: 0.85rem; margin: 1.25rem 0; font-size: 0.8rem; line-height: 1.5; color: var(--color-soft-cream);">
-          <strong>Strict License Policy:</strong><br />
-          ONE PAYMENT = ONE PURCHASER = ONE USER = ONE WINDOWS DEVICE.<br />
-          Your personal license binds cryptographically to your registered Windows device. Multiple users cannot share the same license.
+        <!-- Manual VPA & Beneficiary Details -->
+        <div class="checkout-vpa-row">
+          <div style="text-align: left;">
+            <span style="font-size: 0.7rem; color: #94A3B8; display: block; text-transform: uppercase;">Official UPI VPA</span>
+            <span class="checkout-vpa-val" id="checkout-vpa-text">sacredfriends@upi</span>
+          </div>
+          <button type="button" class="btn-copy-small" id="btn-copy-vpa">Copy UPI ID</button>
         </div>
 
-        <div style="display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--color-soft-cream);">
-          <input type="checkbox" id="checkout-agree-policy" required style="margin-top: 3px;" />
-          <label for="checkout-agree-policy">
-            I confirm that I understand this license is valid for one user on one registered Windows device only.
-          </label>
+        <!-- Pulsing Status & Timer -->
+        <div class="checkout-live-radar">
+          <span class="radar-ping-dot"></span>
+          <span id="checkout-radar-status">Awaiting UPI payment confirmation...</span>
+          <span class="checkout-timer-pill" id="checkout-timer">10:00</span>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-lg" id="checkout-submit-btn" style="width: 100%;">
-          Proceed to Sovereign UPI Checkout (₹499)
-        </button>
-      </form>
+        <!-- Action Buttons -->
+        <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-top: 1.15rem;">
+          <button type="button" class="btn btn-primary" id="btn-verify-upi-payment" style="width: 100%;">
+            ✓ Verify Payment / I Have Paid
+          </button>
+          
+          <div style="display: flex; gap: 0.5rem;">
+            <a id="btn-open-upi-app" class="btn btn-secondary btn-sm" href="#" style="flex: 1; text-align: center;">
+              Open in UPI App ↗
+            </a>
+            <button type="button" id="btn-back-to-form" class="btn btn-secondary btn-sm" style="flex: 1;">
+              ← Change Details
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 3: INSTANT CELEBRATION & LICENSE UNBOXING -->
+      <div id="checkout-stage-success" class="checkout-stage checkout-success-box" style="display: none;">
+        <div class="checkout-success-icon">✓</div>
+        <span class="edition-badge badge-premium" style="position: static; display: inline-block; margin-bottom: 0.5rem;">Payment Verified</span>
+        <h2 class="font-display" style="font-size: 1.5rem; color: var(--color-warm-ivory); margin: 0 0 0.5rem;">
+          Sacred Friends Premium Unlocked!
+        </h2>
+        <p style="font-size: 0.85rem; color: var(--color-soft-cream); line-height: 1.5; margin: 0;">
+          Your payment was confirmed. Your personal 1-device lifetime license has been cryptographically generated and issued.
+        </p>
+
+        <div class="checkout-key-highlight">
+          <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--color-gold-light); letter-spacing: 0.05em; display: block; margin-bottom: 0.4rem;">
+            Your Personal Windows License Key
+          </span>
+          <code class="checkout-key-code" id="checkout-success-key">SF2-XXXX-XXXX-XXXX-XXXX</code>
+          <button type="button" id="btn-copy-success-key" class="btn btn-secondary btn-sm">Copy License Key</button>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.25rem;">
+          <a id="checkout-success-download" class="btn btn-primary" href="#" style="width: 100%; text-align: center;">
+            <span>Download V2 Premium Setup (.exe)</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M0 3.449L9.75 2.1v9.451H0V3.449zm10.949-1.551L24 0v11.551h-13.051V1.898zM0 12.651h9.75v9.451L0 20.75v-8.099zm10.949 0H24V24l-13.051-1.898V12.651z" />
+            </svg>
+          </a>
+          
+          <button type="button" id="checkout-success-dashboard-btn" class="btn btn-secondary" style="width: 100%;">
+            Open Customer Licensing Dashboard ↗
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 
