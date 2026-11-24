@@ -914,25 +914,19 @@
           <button type="button" class="btn-copy-small" id="btn-copy-vpa">Copy</button>
         </div>
 
-        <!-- UTR Entry Form for Genuine Payment Verification -->
-        <div style="margin: 0.65rem 0; text-align: left;">
+        <!-- Confirmation Action Buttons -->
+        <div style="margin-top: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <button type="button" class="btn btn-primary" id="btn-confirm-payment" style="width: 100%; font-size: 0.85rem; padding: 0.65rem 1rem;">
+            ✓ I Have Paid — Claim My License
+          </button>
           <div style="display: flex; gap: 0.4rem;">
-            <input type="text" id="checkout-utr-input" class="diag-input" placeholder="Enter 12-digit UPI UTR / Ref No." maxlength="12" style="font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.45rem 0.65rem;" />
-            <button type="button" class="btn btn-primary btn-sm" id="btn-submit-utr" style="white-space: nowrap; padding: 0.45rem 0.85rem; font-size: 0.78rem;">
-              Verify UTR
+            <a id="btn-open-upi-app" class="btn btn-secondary btn-sm" href="#" style="flex: 1; text-align: center; font-size: 0.76rem; padding: 0.45rem;">
+              Open in UPI App ↗
+            </a>
+            <button type="button" id="btn-back-to-form" class="btn btn-secondary btn-sm" style="flex: 0.55; font-size: 0.76rem; padding: 0.45rem;">
+              ← Back
             </button>
           </div>
-          <div id="checkout-utr-alert" style="margin-top: 0.4rem; font-size: 0.76rem; display: none; padding: 0.35rem 0.55rem; border-radius: 6px;"></div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div style="display: flex; gap: 0.5rem; margin-top: 0.65rem;">
-          <a id="btn-open-upi-app" class="btn btn-secondary btn-sm" href="#" style="flex: 1; text-align: center; font-size: 0.76rem; padding: 0.45rem;">
-            Open in UPI App ↗
-          </a>
-          <button type="button" id="btn-back-to-form" class="btn btn-secondary btn-sm" style="flex: 0.55; font-size: 0.76rem; padding: 0.45rem;">
-            ← Back
-          </button>
         </div>
       </div>
 
