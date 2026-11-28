@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import apiRoutes from './routes/api.js';
@@ -13,7 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5500;
 
 // Security Middleware
 app.use(
@@ -44,8 +45,12 @@ app.use(
         ],
         connectSrc: [
           "'self'",
+          'http://localhost:5500',
+          'http://localhost:5050',
           'http://localhost:5000',
           'http://localhost:5173',
+          'http://127.0.0.1:5500',
+          'http://127.0.0.1:5050',
           'http://127.0.0.1:5000',
           'http://127.0.0.1:5173',
           'http://localhost:6100',
@@ -75,14 +80,13 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 
 // Serve Public Static Assets
-app.use(express.static(path.resolve(__dirname, '../public')));
+app.use(express.static(path.resolve(__dirname, '../frontend/public')));
 
 // Serve Frontend Source Files
 app.use('/frontend', express.static(path.resolve(__dirname, '../frontend')));
-app.use('/src', express.static(path.resolve(__dirname, '../frontend'))); // Backward-compatible route
 
-// If production build exists in dist, serve that too
-const distPath = path.resolve(__dirname, '../dist');
+// If production build exists in frontend/dist, serve that
+const distPath = path.resolve(__dirname, '../frontend/dist');
 app.use(express.static(distPath));
 
 // API Routes
@@ -95,14 +99,22 @@ app.get('/health', (req, res) => {
 
 // Single-Page Application Client Fallback
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(distPath, 'index.html'));
+  const distIndex = path.resolve(distPath, 'index.html');
+  if (fs.existsSync(distIndex)) {
+    return res.sendFile(distIndex);
+  }
+  const frontendIndex = path.resolve(__dirname, '../frontend/index.html');
+  if (fs.existsSync(frontendIndex)) {
+    return res.sendFile(frontendIndex);
+  }
+  res.status(404).send('Not Found');
 });
 
 // Start Server & Connect Database
 async function startServer() {
   await connectDB();
 
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`\n======================================================`);
     console.log(`🕉️  SACRED FRIENDS SERVER — Q-CUBIC BACKEND PLATFORM`);
     console.log(`======================================================`);

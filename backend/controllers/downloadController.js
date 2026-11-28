@@ -6,7 +6,7 @@ import { repository } from '../storage/db.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const V1_INSTALLER_PATH = path.resolve(__dirname, '../../public/downloads/SacredFriends-V1-Free-Setup.exe');
+const V1_INSTALLER_PATH = path.resolve(__dirname, '../../frontend/public/downloads/SacredFriends-V1-Free-Setup.exe');
 const V2_PRIVATE_INSTALLER_PATH = path.resolve(__dirname, '../private_downloads/SacredFriends-V2-Paid-Setup.exe');
 
 /**

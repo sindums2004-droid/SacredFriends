@@ -12,6 +12,7 @@ node_modules/
 
 # Build output
 dist/
+frontend/dist/
 dist-ssr/
 *.local
 
@@ -37,7 +38,11 @@ lerna-debug.log*
 
 # Private server data
 server/data/*.json
+backend/data/db.json
 backend/private_downloads/
+
+# Cloned Sub-repositories
+youpi-gateway/
 
 # Large binaries and installer executables (exceeds GitHub 100MB limit)
 *.exe

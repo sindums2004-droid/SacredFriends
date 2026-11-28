@@ -1,0 +1,231 @@
+/* =========================================================
+   PRICING & COMMERCE SECTION STYLES
+   ========================================================= */
+
+.realm-pricing,
+.pricing-section {
+  padding-top: 6.5rem;
+  padding-bottom: 7rem;
+  background: radial-gradient(circle at 50% 30%, rgba(18, 30, 68, 0.45) 0%, rgba(4, 7, 18, 0.98) 75%);
+  position: relative;
+  z-index: 10;
+}
+
+.pricing-heading {
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.pricing-eyebrow,
+.pricing-plan-label,
+.pricing-includes {
+  color: #94a3b8;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pricing-heading h2 {
+  margin: 0.65rem 0 0.55rem;
+  color: var(--color-warm-ivory);
+  font-size: clamp(1.8rem, 3.2vw, 2.55rem);
+  line-height: 1.2;
+}
+
+.pricing-heading > p {
+  color: var(--color-soft-cream);
+  font-size: 0.96rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 1.5rem;
+  max-width: 960px;
+  margin: 0 auto 3.5rem;
+}
+
+@media (max-width: 860px) {
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pricing-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 2rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(155deg, rgba(16, 22, 36, 0.75) 0%, rgba(7, 10, 18, 0.95) 100%);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(14px);
+}
+
+.pricing-card-premium {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: linear-gradient(155deg, rgba(20, 26, 42, 0.82) 0%, rgba(8, 12, 22, 0.98) 100%);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.85);
+}
+
+.pricing-featured-badge {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-full);
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.06);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pricing-card-header {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  margin-bottom: 1.5rem;
+}
+
+.pricing-price-box {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.pricing-amount {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--color-warm-ivory);
+}
+
+.pricing-features-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.pricing-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  color: var(--color-soft-cream);
+  line-height: 1.45;
+}
+
+.pricing-feature-icon {
+  color: var(--color-gold-base);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+/* In-Modal UPI Checkout Terminal & Celebration */
+.checkout-qr-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.75rem auto;
+}
+
+.checkout-qr-card {
+  padding: 0.65rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.75);
+}
+
+.checkout-qr-card img {
+  width: 200px;
+  height: 200px;
+  display: block;
+}
+
+.checkout-success-box {
+  text-align: center;
+  padding: 1.5rem 0.5rem;
+}
+
+.checkout-success-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #10b981;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+/* Modals Overlay & Dialog */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-normal);
+  padding: 1.25rem;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-dialog {
+  background: linear-gradient(155deg, rgba(18, 30, 68, 0.95) 0%, rgba(6, 11, 26, 0.98) 100%);
+  border: 1px solid var(--border-gold-bright);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem;
+  max-width: 580px;
+  width: 100%;
+  box-shadow: var(--shadow-celestial);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--color-muted-stone);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.modal-close-btn:hover {
+  color: var(--color-warm-ivory);
+}

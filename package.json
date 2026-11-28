@@ -5,12 +5,17 @@
   "type": "module",
   "scripts": {
     "dev:frontend": "vite --port 5173",
-    "dev:backend": "node backend/server.js",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "node --watch backend/server.js",
+    "dev:youpi": "node youpi-gateway/scripts/dev.js",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:youpi\"",
+    "dev:lite": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:youpi\"",
+    "setup:youpi": "cd youpi-gateway && npm install && npm run db:setup",
     "build": "vite build",
     "preview": "vite preview",
     "start": "node backend/server.js",
-    "test": "node backend/test_runner.js"
+    "test": "node backend/tests/test_runner.js",
+    "render:video": "node backend/scripts/render_video.js"
   },
   "keywords": [
     "sacred-friends",
@@ -19,22 +24,26 @@
     "windows",
     "licensing",
     "youpi-pg",
-    "mongodb"
+    "json-database"
   ],
   "author": "Q-CUBIC Innovations",
   "license": "UNLICENSED",
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "clsx": "^2.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "helmet": "^8.0.0",
-    "jpeg-js": "^0.4.4",
-    "jsqr": "^1.4.0",
-    "mongoose": "^8.9.5",
-    "qrcode": "^1.5.4",
+    "lucide-react": "^1.80.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwind-merge": "^3.7.1",
+    "tailwindcss": "^4.3.5",
     "three": "^0.187.0"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^6.3.0",
     "concurrently": "^9.1.2",
     "vite": "^8.3.5"
   }

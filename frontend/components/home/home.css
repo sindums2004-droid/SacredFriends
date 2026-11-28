@@ -1,0 +1,355 @@
+/* =========================================================
+   TRAFFIC GODS INSPIRED COLOSSAL HERO (NADNOVA AESTHETIC)
+   Deep Void, Colossal Metallic Typography, Orbiting Telemetry
+   ========================================================= */
+
+.realm-opening {
+  min-height: 100vh;
+  position: relative;
+  text-align: center;
+  padding-top: 7rem;
+  padding-bottom: 4rem;
+  background: radial-gradient(circle at 50% 35%, rgba(0, 240, 255, 0.05) 0%, rgba(212, 175, 55, 0.03) 30%, transparent 65%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-light-rays {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.opening-hero-stage {
+  position: relative;
+  z-index: 10;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Category Badge (Monospace Pill) */
+.hero-category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  padding: 0.38rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.hero-category-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-neon-cyan);
+  box-shadow: 0 0 10px var(--color-neon-cyan);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.7); opacity: 0.5; }
+}
+
+/* Colossal Headline */
+.hero-colossal-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6.5vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  margin: 0 auto 1.25rem;
+  max-width: 960px;
+  background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.8));
+}
+
+.hero-colossal-title .highlight-cyan {
+  background: linear-gradient(180deg, #ffffff 20%, #00f0ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-colossal-subtitle {
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.6;
+  color: #94a3b8;
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+}
+
+/* 3D Visual Centerpiece Stage & Orbiting Telemetry */
+.hero-visual-stage {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-radial-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, rgba(212, 175, 55, 0.08) 40%, transparent 70%);
+  filter: blur(48px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.opening-artwork-wrap {
+  position: relative;
+  z-index: 5;
+  width: 320px;
+  height: 320px;
+  margin: 0 auto;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+}
+
+.opening-artwork-wrap:active {
+  cursor: grabbing;
+}
+
+.opening-halo-ring {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.15), 0 0 0 1px rgba(0, 240, 255, 0.2) inset;
+  pointer-events: none;
+  animation: haloSpin 20s linear infinite;
+}
+
+@keyframes haloSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.opening-deity-img {
+  width: 260px;
+  height: 260px;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 30px rgba(0, 240, 255, 0.25));
+  transition: transform 0.3s ease;
+}
+
+/* Orbiting Telemetry Capsules (Nadnova Signature) */
+.telemetry-capsule {
+  position: absolute;
+  z-index: 15;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(8, 9, 11, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  color: #f1f5f9;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  pointer-events: auto;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.telemetry-capsule:hover {
+  border-color: var(--color-neon-cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 16px rgba(0, 240, 255, 0.3);
+}
+
+.telemetry-capsule.top-left {
+  top: 15%;
+  left: 2%;
+}
+
+.telemetry-capsule.top-right {
+  top: 18%;
+  right: 2%;
+}
+
+.telemetry-capsule.bottom-left {
+  bottom: 8%;
+  left: 6%;
+}
+
+@media (max-width: 768px) {
+  .telemetry-capsule {
+    position: static;
+    margin: 0.4rem auto;
+    display: inline-flex;
+  }
+
+  .hero-telemetry-mobile-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+}
+
+.capsule-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-neon-cyan);
+  box-shadow: 0 0 8px var(--color-neon-cyan);
+}
+
+.capsule-dot.emerald {
+  background-color: var(--color-emerald);
+  box-shadow: 0 0 8px var(--color-emerald);
+}
+
+.capsule-dot.gold {
+  background-color: var(--color-gold-base);
+  box-shadow: 0 0 8px var(--color-gold-base);
+}
+
+/* Character Active Name & Title */
+.hero-char-info {
+  margin-top: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero-char-info h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.hero-char-info p {
+  font-size: 0.85rem;
+  color: var(--color-gold-light);
+  letter-spacing: 0.02em;
+}
+
+/* Dual Action Buttons Cluster */
+.hero-actions-cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #ffffff;
+  color: #000000;
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 0.85rem 1.85rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-btn-primary:hover {
+  background: #f1f5f9;
+  transform: translateY(-2px);
+  box-shadow: 0 0 36px rgba(0, 240, 255, 0.6);
+}
+
+.hero-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 0.85rem 1.85rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Deity Switcher Pills Strip */
+.opening-switcher-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.hero-switcher-btn {
+  background: rgba(8, 9, 11, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #94a3b8;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.4rem 0.95rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  backdrop-filter: blur(10px);
+}
+
+.hero-switcher-btn:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.hero-switcher-btn.active {
+  color: #ffffff;
+  background: rgba(0, 240, 255, 0.12);
+  border-color: rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.25);
+  font-weight: 600;
+}

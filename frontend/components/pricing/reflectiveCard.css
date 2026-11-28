@@ -1,0 +1,321 @@
+.reflective-card {
+  position: relative;
+  box-sizing: border-box;
+  width: var(--rc-width);
+  height: var(--rc-height);
+  max-width: 100%;
+  perspective: 900px;
+  color: var(--rc-ink);
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.reflective-card__body {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--rc-radius);
+  background: var(--rc-base);
+  box-shadow: var(--rc-shadow);
+  transform: translate3d(0, var(--rc-lift, 0px), 0) rotateX(var(--rc-rotate-x, 0deg)) rotateY(var(--rc-rotate-y, 0deg));
+  opacity: var(--rc-presence, 1);
+  isolation: isolate;
+  will-change: transform;
+}
+
+.reflective-card__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.reflective-card__content {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding: var(--rc-pad);
+}
+
+.reflective-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.reflective-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--rc-ink);
+  font-weight: 500;
+}
+
+.reflective-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  color: var(--rc-muted);
+}
+
+.reflective-card__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--rc-status);
+}
+
+.reflective-card__identity {
+  margin-top: auto;
+}
+
+.reflective-card__name {
+  margin: 0;
+  color: var(--rc-ink);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.reflective-card__role {
+  margin: 4px 0 0;
+  color: var(--rc-muted);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.reflective-card__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.reflective-card__id {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reflective-card__label {
+  color: var(--rc-muted);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.reflective-card__value {
+  overflow: hidden;
+  color: var(--rc-ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reflective-card__tile {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--rc-tile-radius);
+  background: var(--rc-tile);
+  box-shadow: var(--rc-tile-shadow);
+  color: var(--rc-muted);
+}
+
+.reflective-card__tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px var(--rc-tile-edge),
+    inset 0 1px 0 var(--rc-tile-highlight);
+  pointer-events: none;
+}
+
+.reflective-card__rim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px var(--rc-rim),
+    inset 0 1px 0 var(--rc-rim-highlight);
+  pointer-events: none;
+}
+
+.reflective-card__media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ========================================================
+   Pricing Section Integration Styles
+   ======================================================== */
+.pricing-card.reflective-card {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  background: linear-gradient(145deg, #171920 0%, #101116 100%);
+  perspective: 1200px;
+  overflow: visible;
+  transform: translate3d(0, var(--rc-lift, 0px), 0) rotateX(var(--rc-rotate-x, 0deg)) rotateY(var(--rc-rotate-y, 0deg));
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.pricing-card.reflective-card .reflective-card__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pricing-card.reflective-card .reflective-card__content {
+  position: relative;
+  z-index: 2;
+  padding: 1.85rem 1.75rem 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #f2f3f5;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.pricing-card.reflective-card .reflective-card__header {
+  flex-wrap: wrap;
+  color: #f2f3f5;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.pricing-tier-name {
+  font-size: 1.22rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+}
+
+.pricing-card.reflective-card .reflective-card__status {
+  color: #d9dbe0;
+  font-weight: 500;
+}
+
+.pricing-card.reflective-card .pricing-card-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.pricing-card.reflective-card .pricing-plan-label,
+.pricing-card.reflective-card .pricing-includes {
+  color: #d0d2d8;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+}
+
+.pricing-card.reflective-card .pricing-card-header h3 {
+  color: #fff;
+  font-size: 1.24rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+.pricing-card.reflective-card .pricing-period {
+  color: #d0d2d8;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.pricing-card.reflective-card .pricing-features li {
+  color: #eceef2;
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.pricing-card.reflective-card .reflective-card__label {
+  color: #c9cbd1;
+  font-weight: 500;
+}
+
+.pricing-card.reflective-card .reflective-card__value {
+  color: #f2f3f5;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.pricing-card.reflective-card .pricing-license-note {
+  color: #d0d2d8;
+  font-weight: 500;
+}
+
+.pricing-card.reflective-card--premium {
+  background: linear-gradient(145deg, #181d28 0%, #0c0f17 100%);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 24px 50px -12px rgba(0, 0, 0, 0.85), 0 0 30px -8px rgba(255, 255, 255, 0.05);
+}
+
+.pricing-card.reflective-card .pricing-cta {
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.pricing-card.reflective-card .action-open-dashboard {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.pricing-card.reflective-card .reflective-card__footer {
+  margin-top: auto;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pricing-card.reflective-card--premium .reflective-card__rim {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}

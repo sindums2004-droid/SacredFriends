@@ -1,0 +1,605 @@
+[
+  {
+    "id": "krishna",
+    "name": "Krishna",
+    "title": "The Playful Lord & Flute Charmer",
+    "category": "companions",
+    "categoryLabel": "Little Companions",
+    "personality": "Playful, joyful, affectionate, and fond of music & butter",
+    "personalityKeywords": [
+      "playful",
+      "music",
+      "flute",
+      "butter",
+      "dance"
+    ],
+    "nightAction": "Plays a tranquil lullaby on his flute",
+    "nightActionCode": "flute_01",
+    "specialSoundAction": "Plays divine flute melody",
+    "specialSoundActionCode": "flute_01",
+    "version": "1.2",
+    "behaviorsCount": 16,
+    "defaultImage": "/assets/characters/portraits/krishna.png",
+    "specialImage": "/assets/characters/portraits/krishna_flute.png",
+    "alternatePoses": [
+      {
+        "name": "Flute Melodies",
+        "image": "/assets/characters/portraits/krishna_flute.png"
+      },
+      {
+        "name": "Butter Pot Treat",
+        "image": "/assets/characters/portraits/krishna_butter.png"
+      },
+      {
+        "name": "Gentle Calf Care",
+        "image": "/assets/characters/portraits/krishna_calf.png"
+      },
+      {
+        "name": "Joyful Leap",
+        "image": "/assets/characters/portraits/krishna_jump.png"
+      }
+    ],
+    "description": "The beloved little cowherd prince who radiates joyous divine energy. Krishna brings a sense of wonder and mischievous charm to your desktop, gently playing his golden flute and playfully dancing as you work.",
+    "mythologyNote": "Krishna is revered throughout the subcontinent as the supreme embodiment of divine joy, unconditional love, and spiritual light.",
+    "reminderReactions": [
+      {
+        "type": "Lunch",
+        "message": "Lunch time! Take a happy little break and enjoy your lunch.",
+        "action": "Enjoys sweet churned butter"
+      },
+      {
+        "type": "Break",
+        "message": "Time for a stretch break",
+        "action": "Gentle stretch and gaze around"
+      },
+      {
+        "type": "Rest",
+        "message": "Rest your eyes for a moment",
+        "action": "Peacefully sits with crossed legs"
+      },
+      {
+        "type": "Meeting",
+        "message": "Upcoming calendar event",
+        "action": "Waves cheerily at your screen"
+      }
+    ]
+  },
+  {
+    "id": "ganesha",
+    "name": "Ganesha",
+    "title": "The Remover of Obstacles & Muse of Learning",
+    "category": "companions",
+    "categoryLabel": "Little Companions",
+    "personality": "Warm, deeply curious, book-loving, and delightfully cheerful",
+    "personalityKeywords": [
+      "warm",
+      "curious",
+      "books",
+      "modak",
+      "wisdom"
+    ],
+    "nightAction": "Reads ancient scriptures peacefully by nightfall",
+    "nightActionCode": "read",
+    "specialSoundAction": "Joyfully raises his trunk in victory celebration",
+    "specialSoundActionCode": "celebrate",
+    "version": "1.2",
+    "behaviorsCount": 22,
+    "defaultImage": "/assets/characters/portraits/ganesha.png",
+    "specialImage": "/assets/characters/portraits/ganesha_special.png",
+    "description": "The adorable, wise lord who dispels hurdles with a warm smile. Ganesha loves reading scrolls, snacking on sweet modaks, and celebrating every small milestone you accomplish on your computer.",
+    "mythologyNote": "Traditionally invoked at the beginning of any new endeavor, learning journey, or creative work to ensure smooth progress and auspiciousness.",
+    "reminderReactions": [
+      {
+        "type": "Lunch",
+        "message": "Time to nourish yourself",
+        "action": "Happily relishes sweet modak"
+      },
+      {
+        "type": "Focus",
+        "message": "Deep work session",
+        "action": "Settles in with an open scroll"
+      },
+      {
+        "type": "Break",
+        "message": "Pause and take a breath",
+        "action": "Waves his gentle ears in contentment"
+      }
+    ]
+  },
+  {
+    "id": "hanuman",
+    "name": "Little Hanuman",
+    "title": "The Devoted Friend & Valiant Helper",
+    "category": "companions",
+    "categoryLabel": "Little Companions",
+    "personality": "Cheerful, devoted, boundless energy, helpful, and kind-hearted",
+    "personalityKeywords": [
+      "cheerful",
+      "devoted",
+      "energetic",
+      "mango",
+      "strength"
+    ],
+    "nightAction": "Sits peacefully in deep meditative devotion",
+    "nightActionCode": "peaceful_sit",
+    "specialSoundAction": "Enjoys a sun-ripened golden mango",
+    "specialSoundActionCode": "mango",
+    "version": "1.0",
+    "behaviorsCount": 19,
+    "defaultImage": "/assets/characters/portraits/hanuman.png",
+    "specialImage": "/assets/characters/portraits/hanuman_special.png",
+    "description": "Full of boundless vitality and unshakable devotion, Little Hanuman hops across your screen, happily carries juicy sweet mangoes, and inspires you to meet any challenge with courageous optimism.",
+    "mythologyNote": "Celebrated as the symbol of pure devotion, selflessness, unwavering loyalty, and extraordinary spiritual prowess.",
+    "reminderReactions": [
+      {
+        "type": "Energy",
+        "message": "Stand up and energize",
+        "action": "A victorious energetic leap"
+      },
+      {
+        "type": "Break",
+        "message": "Time for a healthy snack",
+        "action": "Nibbles on a golden ripe mango"
+      },
+      {
+        "type": "Rest",
+        "message": "Calm your mind",
+        "action": "Crossed-leg peaceful meditation"
+      }
+    ]
+  },
+  {
+    "id": "shiva",
+    "name": "Little Shiva",
+    "title": "The Serene Ascetic & Cosmos Weaver",
+    "category": "deities",
+    "categoryLabel": "Deities & Avatars",
+    "personality": "Calm, deeply meditative, serene, gentle, and occasionally playful",
+    "personalityKeywords": [
+      "calm",
+      "meditative",
+      "damru",
+      "serene",
+      "tranquil"
+    ],
+    "nightAction": "Enters profound cosmic stillness and samadhi",
+    "nightActionCode": "meditate",
+    "specialSoundAction": "Plays the cosmic rhythm on his sacred Damru",
+    "specialSoundActionCode": "damru",
+    "version": "1.0",
+    "behaviorsCount": 24,
+    "defaultImage": "/assets/characters/portraits/shiva.png",
+    "specialImage": "/assets/characters/portraits/shiva_special.png",
+    "description": "Little Shiva brings profound stillness and mindful balance to your workspace. Adorned with crescent moon radiance, he oscillates between deep meditative peace and joyful rhythmic taps of his damru drum.",
+    "mythologyNote": "The Mahadeva who balances dissolution with transcendence, representing unshakeable inner peace, supreme awareness, and cosmic rhythm.",
+    "reminderReactions": [
+      {
+        "type": "Rest",
+        "message": "Take 3 deep conscious breaths",
+        "action": "Tranquil lotus meditation pose"
+      },
+      {
+        "type": "Focus",
+        "message": "Clear away distractions",
+        "action": "Damru sound vibration"
+      },
+      {
+        "type": "Break",
+        "message": "Gentle eye rest",
+        "action": "Peaceful breath cycle"
+      }
+    ]
+  },
+  {
+    "id": "saraswati",
+    "name": "Saraswati Devi",
+    "title": "Goddess of Knowledge, Music & Wisdom",
+    "category": "goddesses",
+    "categoryLabel": "Goddesses",
+    "personality": "Calm, thoughtful, artistic, gentle, and profoundly inspiring",
+    "personalityKeywords": [
+      "wisdom",
+      "music",
+      "veena",
+      "creative",
+      "learning"
+    ],
+    "nightAction": "Sits gracefully reflecting beside crystalline waters",
+    "nightActionCode": "peaceful_sit",
+    "specialSoundAction": "Plays a soul-soothing melody on her celestial Veena",
+    "specialSoundActionCode": "play_veena",
+    "version": "1.0",
+    "behaviorsCount": 19,
+    "defaultImage": "/assets/characters/portraits/saraswati.png",
+    "specialImage": "/assets/characters/portraits/saraswati_special.png",
+    "description": "The serene patron of scholars, musicians, writers, and thinkers. Saraswati Devi gracefully accompanies your workflow, gently plucking her veena to foster creative focus, clarity, and aesthetic harmony.",
+    "mythologyNote": "Revered as the river of enlightenment, patroness of speech, learning, sacred sciences, and fine arts.",
+    "reminderReactions": [
+      {
+        "type": "Focus",
+        "message": "Creative flow session",
+        "action": "Veena string strumming"
+      },
+      {
+        "type": "Break",
+        "message": "Step back and reflect",
+        "action": "Contemplative lotus posture"
+      },
+      {
+        "type": "Rest",
+        "message": "Rest your thoughts",
+        "action": "Gentle smile of wisdom"
+      }
+    ]
+  },
+  {
+    "id": "lakshmi",
+    "name": "Lakshmi Devi",
+    "title": "Goddess of Abundance, Grace & Fortune",
+    "category": "goddesses",
+    "categoryLabel": "Goddesses",
+    "personality": "Gentle, joyful, benevolent, encouraging, and radiating peace",
+    "personalityKeywords": [
+      "abundance",
+      "grace",
+      "gold",
+      "lotus",
+      "fortune"
+    ],
+    "nightAction": "Bestows tranquil blessings from a golden lotus throne",
+    "nightActionCode": "peaceful_sit",
+    "specialSoundAction": "Offers prosperity from a radiant golden bowl",
+    "specialSoundActionCode": "coin_bowl",
+    "version": "1.0",
+    "behaviorsCount": 19,
+    "defaultImage": "/assets/characters/portraits/lakshmi.png",
+    "specialImage": "/assets/characters/portraits/lakshmi_special.png",
+    "description": "Radiating warm golden warmth and auspicious fortune, Lakshmi Devi graces your desktop with gentle encouragement. She reminds you that true wealth includes peace of mind, health, and contentment.",
+    "mythologyNote": "The supreme goddess of auspicious wealth, auspicious beginnings, and spiritual prosperity, emerging from the churning of the cosmic ocean.",
+    "reminderReactions": [
+      {
+        "type": "Lunch",
+        "message": "Honor your body with nourishing food",
+        "action": "Gentle shower of golden blessings"
+      },
+      {
+        "type": "Break",
+        "message": "Recharge your spirit",
+        "action": "Peaceful lotus flower blessing"
+      }
+    ]
+  },
+  {
+    "id": "durga",
+    "name": "Durga Maa",
+    "title": "The Fearless Mother & Guardian of Dharma",
+    "category": "guardians",
+    "categoryLabel": "Cosmic Guardians",
+    "personality": "Warm, protective, supremely confident, compassionate, and serene",
+    "personalityKeywords": [
+      "protective",
+      "courage",
+      "strength",
+      "guardian",
+      "motherly"
+    ],
+    "nightAction": "Watches over your quiet desktop with protective vigilance",
+    "nightActionCode": "peaceful_sit",
+    "specialSoundAction": "Manifests a luminous lotus of divine protection",
+    "specialSoundActionCode": "lotus",
+    "version": "1.0",
+    "behaviorsCount": 20,
+    "defaultImage": "/assets/characters/portraits/durga.png",
+    "specialImage": "/assets/characters/portraits/durga_special.png",
+    "description": "The protective cosmic mother who brings confidence and grounding stability to your desktop. Her presence fosters an inner atmosphere of courage, focused determination, and fearless resolve.",
+    "mythologyNote": "Invincible mother goddess who unites the energies of all celestials to safeguard cosmic equilibrium and conquer negative forces.",
+    "reminderReactions": [
+      {
+        "type": "Break",
+        "message": "Step away and regain composure",
+        "action": "Radiant lotus blossom manifestation"
+      },
+      {
+        "type": "Meeting",
+        "message": "Face your meetings with confidence",
+        "action": "Assuring protective glance"
+      }
+    ]
+  },
+  {
+    "id": "parvati",
+    "name": "Parvati Devi",
+    "title": "The Nurturing Mother & Mountain Maiden",
+    "category": "goddesses",
+    "categoryLabel": "Goddesses",
+    "personality": "Nurturing, serene, reassuring, tender-hearted, and quietly joyful",
+    "personalityKeywords": [
+      "nurturing",
+      "serene",
+      "flowers",
+      "gentle",
+      "reassuring"
+    ],
+    "nightAction": "Rests quietly enveloped in Himalayan serenity",
+    "nightActionCode": "peaceful_sit",
+    "specialSoundAction": "Presents fragrant floral offerings",
+    "specialSoundActionCode": "flower_offering",
+    "version": "1.0",
+    "behaviorsCount": 19,
+    "defaultImage": "/assets/characters/portraits/parvati.png",
+    "specialImage": "/assets/characters/portraits/parvati_special.png",
+    "description": "Daughter of the snowy peaks and embodiment of devoted perseverance, Parvati Devi walks quietly beside your windows, gently scattering fresh blossoms and cultivating maternal warmth.",
+    "mythologyNote": "The consort of Shiva and mother of Ganesha and Kartikeya, celebrated for boundless determination, spiritual beauty, and unconditional love.",
+    "reminderReactions": [
+      {
+        "type": "Break",
+        "message": "Take a calming breath",
+        "action": "Blossom petal offering"
+      },
+      {
+        "type": "Rest",
+        "message": "Soft gentle pause",
+        "action": "Peaceful seated rest"
+      }
+    ]
+  },
+  {
+    "id": "radha",
+    "name": "Little Radha",
+    "title": "The Joyful Maiden of Vrindavan",
+    "category": "companions",
+    "categoryLabel": "Little Companions",
+    "personality": "Joyful, affectionate, graceful, and fond of dancing and flowers",
+    "personalityKeywords": [
+      "joyful",
+      "graceful",
+      "flowers",
+      "dance",
+      "affectionate"
+    ],
+    "nightAction": "Sits peacefully among fragrant nighttime blossoms",
+    "nightActionCode": "peaceful_sit",
+    "specialSoundAction": "Weaves a sweet fragrant flower garland",
+    "specialSoundActionCode": "flower_garland",
+    "version": "1.0",
+    "behaviorsCount": 19,
+    "defaultImage": "/assets/characters/portraits/radha.png",
+    "specialImage": "/assets/characters/portraits/radha_special.png",
+    "description": "The soul of devotion and joyful harmony, Little Radha lights up your desktop with graceful dance steps, vibrant smiles, and lovingly woven flower garlands that brighten your workday.",
+    "mythologyNote": "The eternal consort of Krishna and the highest personification of pure divine devotion and transcendental love.",
+    "reminderReactions": [
+      {
+        "type": "Break",
+        "message": "Time to smile and stretch",
+        "action": "Graceful spin with floral garland"
+      },
+      {
+        "type": "Lunch",
+        "message": "Enjoy your midday meal",
+        "action": "Joyful festive dance step"
+      }
+    ]
+  },
+  {
+    "id": "rama",
+    "name": "Little Rama",
+    "title": "The Steadfast Prince of Dharma",
+    "category": "deities",
+    "categoryLabel": "Deities & Avatars",
+    "personality": "Gentle, steady, kind, thoughtful, disciplined, and quietly cheerful",
+    "personalityKeywords": [
+      "steady",
+      "noble",
+      "dharma",
+      "kind",
+      "thoughtful"
+    ],
+    "nightAction": "Sits thoughtfully maintaining quiet inner poise",
+    "nightActionCode": "peaceful_sit",
+    "specialSoundAction": "Contemplates a sacred lotus of righteousness",
+    "specialSoundActionCode": "lotus",
+    "version": "1.0",
+    "behaviorsCount": 19,
+    "defaultImage": "/assets/characters/portraits/rama.png",
+    "specialImage": "/assets/characters/portraits/rama_special.png",
+    "description": "The ideal prince who embodies calm rectitude, patience, and kindness. Little Rama walks with quiet dignity, reassuring you through long work sessions with steady, comforting companionship.",
+    "mythologyNote": "The Maryada Purushottama — the ideal human being and avatar of Vishnu who upholds righteousness, humility, and honor in every action.",
+    "reminderReactions": [
+      {
+        "type": "Focus",
+        "message": "Stay purposeful and steady",
+        "action": "Noble upright posture"
+      },
+      {
+        "type": "Break",
+        "message": "Pause for mindful clarity",
+        "action": "Peaceful lotus contemplation"
+      }
+    ]
+  },
+  {
+    "id": "sita",
+    "name": "Sita Devi",
+    "title": "The Earthborn Queen of Grace & Fortitude",
+    "category": "goddesses",
+    "categoryLabel": "Goddesses",
+    "personality": "Calm, graceful, patient, compassionate, and fond of nature",
+    "personalityKeywords": [
+      "graceful",
+      "patient",
+      "flowers",
+      "compassion",
+      "earth"
+    ],
+    "nightAction": "Rests peacefully surrounded by quiet twilight gardens",
+    "nightActionCode": "peaceful_sit",
+    "specialSoundAction": "Weaves fresh forest flower garlands",
+    "specialSoundActionCode": "flower_garland",
+    "version": "1.0",
+    "behaviorsCount": 19,
+    "defaultImage": "/assets/characters/portraits/sita.png",
+    "specialImage": "/assets/characters/portraits/sita_special.png",
+    "description": "Born of the sacred earth, Sita Devi brings an aura of serene nobility and patient fortitude. Her delicate floral craft and gentle companionship foster a tranquil atmosphere on your PC.",
+    "mythologyNote": "Consort of Rama and daughter of Mother Earth, revered for her unyielding inner strength, devotion, purity, and compassionate heart.",
+    "reminderReactions": [
+      {
+        "type": "Break",
+        "message": "Rest your eyes on nature",
+        "action": "Flower garland weaving"
+      },
+      {
+        "type": "Rest",
+        "message": "Gentle pause in your tasks",
+        "action": "Calm meditative smile"
+      }
+    ]
+  },
+  {
+    "id": "kartikeya",
+    "name": "Little Kartikeya",
+    "title": "The Valiant Commander & Peacock Rider",
+    "category": "companions",
+    "categoryLabel": "Little Companions",
+    "personality": "Courageous, curious, lively, energetic, and adventurous",
+    "personalityKeywords": [
+      "courage",
+      "energetic",
+      "peacock",
+      "curious",
+      "leader"
+    ],
+    "nightAction": "Rests peacefully after a day of energetic exploration",
+    "nightActionCode": "peaceful_sit",
+    "specialSoundAction": "Playfully twirls an iridescent peacock feather",
+    "specialSoundActionCode": "feather_play",
+    "version": "1.0",
+    "behaviorsCount": 19,
+    "defaultImage": "/assets/characters/portraits/kartikeya.png",
+    "specialImage": "/assets/characters/portraits/kartikeya_special.png",
+    "description": "The spirited commander of celestial forces in delightful miniature form. Little Kartikeya explores your screen with joyful curiosity, proudly waving his beloved peacock feather.",
+    "mythologyNote": "Also known as Murugan or Skanda, the valiant deity of wisdom, leadership, strategy, and vibrant spiritual youth.",
+    "reminderReactions": [
+      {
+        "type": "Energy",
+        "message": "Quick stretch break!",
+        "action": "Twirls peacock feather energetically"
+      },
+      {
+        "type": "Break",
+        "message": "Rest your shoulders",
+        "action": "Playful curious look around"
+      }
+    ]
+  },
+  {
+    "id": "ayyappa",
+    "name": "Ayyappa Swamy",
+    "title": "The Resolute Master of Sabari Hills",
+    "category": "guardians",
+    "categoryLabel": "Cosmic Guardians",
+    "personality": "Peaceful, disciplined, compassionate, devoted, and gently cheerful",
+    "personalityKeywords": [
+      "disciplined",
+      "peaceful",
+      "compassionate",
+      "lotus",
+      "hills"
+    ],
+    "nightAction": "Enters deep contemplative mountain meditation",
+    "nightActionCode": "meditate",
+    "specialSoundAction": "Offers a radiant lotus in silent blessing",
+    "specialSoundActionCode": "lotus",
+    "version": "1.0",
+    "behaviorsCount": 19,
+    "defaultImage": "/assets/characters/portraits/ayyappa.png",
+    "specialImage": "/assets/characters/portraits/ayyappa_special.png",
+    "description": "Born of the divine union of Shiva and Mohini (Vishnu), Ayyappa Swamy personifies self-discipline, focus, and quiet compassion, bringing an aura of sacred hill sanctuary to your desk.",
+    "mythologyNote": "Lord of Sabarimala, worshipped by millions of pilgrims who observe vows of austerity, truth, and unconditional surrender.",
+    "reminderReactions": [
+      {
+        "type": "Focus",
+        "message": "Clear intent, single focus",
+        "action": "Disciplined lotus meditation"
+      },
+      {
+        "type": "Break",
+        "message": "Drink water and sit tall",
+        "action": "Gentle upright posture"
+      }
+    ]
+  },
+  {
+    "id": "venkateswara",
+    "name": "Lord Venkateswara",
+    "title": "The Supreme Bestower of Tirumala Hills",
+    "category": "deities",
+    "categoryLabel": "Deities & Avatars",
+    "personality": "Serene, benevolent, deeply patient, reassuring, and majestic",
+    "personalityKeywords": [
+      "serene",
+      "benevolent",
+      "reassuring",
+      "majestic",
+      "garland"
+    ],
+    "nightAction": "Bestows quiet nocturnal grace from seven sacred hills",
+    "nightActionCode": "peaceful_sit",
+    "specialSoundAction": "Tends to the fragrant Tulasi and rose garlands",
+    "specialSoundActionCode": "garland_care",
+    "version": "1.0",
+    "behaviorsCount": 19,
+    "defaultImage": "/assets/characters/portraits/venkateswara.png",
+    "specialImage": "/assets/characters/portraits/venkateswara_special.png",
+    "description": "The majestic Lord of the Seven Sacred Hills who listens to every heartfelt wish. Lord Venkateswara provides a calming, benevolent presence that brings reassuring tranquility to your daily computing.",
+    "mythologyNote": "Revered as Balaji or Srinivasa at Tirumala, the Kaliyuga avatar of Vishnu who remains accessible to all seekers.",
+    "reminderReactions": [
+      {
+        "type": "Blessing",
+        "message": "May your day be filled with peace",
+        "action": "Garland care and benevolent glance"
+      },
+      {
+        "type": "Rest",
+        "message": "Rest your mind",
+        "action": "Serene mountain quietude"
+      }
+    ]
+  },
+  {
+    "id": "narasimha",
+    "name": "Narasimha Swamy",
+    "title": "The Loving Defender of the Faithful",
+    "category": "guardians",
+    "categoryLabel": "Cosmic Guardians",
+    "personality": "Protective, compassionate, confident, peaceful, and warm",
+    "personalityKeywords": [
+      "protective",
+      "courage",
+      "lotus",
+      "defender",
+      "reassurance"
+    ],
+    "nightAction": "Guards your quiet hours with serene strength",
+    "nightActionCode": "peaceful_sit",
+    "specialSoundAction": "Unfolds a tranquil lotus of boundless mercy",
+    "specialSoundActionCode": "lotus",
+    "version": "1.0",
+    "behaviorsCount": 19,
+    "defaultImage": "/assets/characters/portraits/narasimha.png",
+    "specialImage": "/assets/characters/portraits/narasimha_special.png",
+    "description": "The ferocious defender softened into an endearing, protective companion. Narasimha Swamy embodies unshakeable faith and immediate protection, assuring you that you are never alone during challenging deadlines.",
+    "mythologyNote": "The half-man, half-lion avatar of Vishnu who manifested instantly from a pillar to protect his young devotee Prahlada.",
+    "reminderReactions": [
+      {
+        "type": "Courage",
+        "message": "Take heart and conquer challenges",
+        "action": "Compassionate lotus blessing"
+      },
+      {
+        "type": "Break",
+        "message": "Step back and breathe",
+        "action": "Calm seated vigilance"
+      }
+    ]
+  }
+]

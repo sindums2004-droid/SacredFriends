@@ -1,0 +1,36 @@
+/* =========================================================
+   TOAST NOTIFICATION STYLES
+   ========================================================= */
+
+.toast-notice {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: rgba(10, 17, 36, 0.95);
+  border: 1px solid var(--border-gold-bright);
+  border-radius: var(--radius-full);
+  padding: 0.65rem 1.35rem;
+  color: var(--color-warm-ivory);
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.2);
+  backdrop-filter: blur(16px);
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: all var(--transition-normal);
+}
+
+.toast-notice.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.toast-sparkle {
+  color: var(--color-gold-base);
+}

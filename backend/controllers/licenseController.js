@@ -76,6 +76,7 @@ export async function activateLicense(req, res) {
         message: 'License successfully activated for your Windows device.',
         licenseKey: updated.licenseKey,
         customerName: updated.customerName,
+        registeredDeviceId: cleanDevice,
         registeredDeviceName: cleanDeviceName,
         activatedAt: updated.activatedAt
       });
@@ -252,8 +253,9 @@ export async function adminResetDevice(req, res) {
   try {
     const { licenseKey, adminSecretKey, reason } = req.body;
     const requiredSecret = process.env.ADMIN_SECRET_KEY || 'sacred-friends-super-admin-secret-2026';
+    const providedSecret = adminSecretKey || req.headers['x-admin-key'] || req.headers['x-admin-secret'];
 
-    if (!adminSecretKey || adminSecretKey !== requiredSecret) {
+    if (!providedSecret || providedSecret !== requiredSecret) {
       return res.status(401).json({
         error: 'UNAUTHORIZED',
         message: 'Invalid administrator credentials.'

@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,16 +6,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.resolve(__dirname, '../data');
 
-// Ensure local fallback data directory exists
+// Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
-const LOCAL_STORAGE_FILE = path.join(DATA_DIR, 'local_db_fallback.json');
+const DB_FILE = path.join(DATA_DIR, 'db.json');
+const CHARACTERS_FILE = path.join(DATA_DIR, 'characters.json');
 
-// Memory/File fallback store for development resilience when Mongo daemon is offline
-let fallbackStore = {
+// In-Memory & File-backed Store (Pure JSON, No MongoDB, No SQLite)
+let dbStore = {
+  users: [],
   licenses: [],
+  orders: [],
   payments: [],
   downloadTokens: [],
   config: {
@@ -26,65 +28,108 @@ let fallbackStore = {
   }
 };
 
-// Load existing fallback file if available
-if (fs.existsSync(LOCAL_STORAGE_FILE)) {
-  try {
-    const raw = fs.readFileSync(LOCAL_STORAGE_FILE, 'utf-8');
-    fallbackStore = { ...fallbackStore, ...JSON.parse(raw) };
-  } catch (err) {
-    console.warn('[DB] Could not parse local fallback file, using fresh store:', err.message);
+// Initialize DB from JSON file
+function loadDB() {
+  if (fs.existsSync(DB_FILE)) {
+    try {
+      const raw = fs.readFileSync(DB_FILE, 'utf-8');
+      dbStore = { ...dbStore, ...JSON.parse(raw) };
+    } catch (err) {
+      console.warn('[DB] Could not parse db.json, initializing fresh store:', err.message);
+    }
+  } else {
+    // Check if legacy fallback exists and migrate
+    const legacyFallback = path.join(DATA_DIR, 'local_db_fallback.json');
+    if (fs.existsSync(legacyFallback)) {
+      try {
+        const raw = fs.readFileSync(legacyFallback, 'utf-8');
+        dbStore = { ...dbStore, ...JSON.parse(raw) };
+        persistDB();
+      } catch (err) {
+        // ignore
+      }
+    }
   }
 }
 
-function persistFallback() {
+function persistDB() {
   try {
-    fs.writeFileSync(LOCAL_STORAGE_FILE, JSON.stringify(fallbackStore, null, 2), 'utf-8');
+    fs.writeFileSync(DB_FILE, JSON.stringify(dbStore, null, 2), 'utf-8');
   } catch (err) {
-    console.error('[DB] Error persisting fallback store:', err.message);
+    console.error('[DB] Error writing to db.json:', err.message);
   }
 }
 
-let isMongoConnected = false;
-
-export async function connectDB() {
-  const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/sacred_friends';
+export function loadCharactersJSON() {
   try {
-    mongoose.set('strictQuery', false);
-    await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 2500, // Quick timeout to prevent blocking if Mongo is not running
-      connectTimeoutMS: 2500
-    });
-    isMongoConnected = true;
-    console.log('[DB] ✅ MongoDB successfully connected to:', uri);
+    if (fs.existsSync(CHARACTERS_FILE)) {
+      const raw = fs.readFileSync(CHARACTERS_FILE, 'utf-8');
+      return JSON.parse(raw);
+    }
   } catch (err) {
-    isMongoConnected = false;
-    console.warn('[DB] ⚠️ MongoDB connection unavailable (' + err.message + ').');
-    console.warn('[DB] 🔄 Activating resilient atomic local storage engine for development & testing.');
+    console.error('[DB] Error reading characters.json:', err.message);
   }
-
-  mongoose.connection.on('disconnected', () => {
-    isMongoConnected = false;
-    console.warn('[DB] ⚠️ MongoDB disconnected. Falling back to resilient local engine.');
-  });
-
-  mongoose.connection.on('reconnected', () => {
-    isMongoConnected = true;
-    console.log('[DB] 🔄 MongoDB reconnected.');
-  });
+  return [];
 }
 
-export function isDbOnline() {
-  return isMongoConnected;
+export function saveCharactersJSON(characters) {
+  try {
+    fs.writeFileSync(CHARACTERS_FILE, JSON.stringify(characters, null, 2), 'utf-8');
+    return true;
+  } catch (err) {
+    console.error('[DB] Error writing to characters.json:', err.message);
+    return false;
+  }
 }
 
-// Unified repository methods that seamlessly work with MongoDB or resilient fallback
+export function initDB() {
+  loadDB();
+  console.log('[DB] ✅ Pure JSON Database initialized from:', DB_FILE);
+  console.log('[DB] 📜 Character Catalog loaded from backend:', CHARACTERS_FILE);
+  return true;
+}
+
+// Backward-compatible alias
+export const connectDB = initDB;
+
 export const repository = {
+  // Characters (Pure JSON Storage in Backend)
+  async getCharacters() {
+    return loadCharactersJSON();
+  },
+
+  async getCharacterById(id) {
+    const list = loadCharactersJSON();
+    return list.find((c) => c.id === id) || null;
+  },
+
+  async saveCharacter(characterData) {
+    const list = loadCharactersJSON();
+    const existingIndex = list.findIndex((c) => c.id === characterData.id);
+    if (existingIndex !== -1) {
+      list[existingIndex] = { ...list[existingIndex], ...characterData };
+    } else {
+      list.push(characterData);
+    }
+    saveCharactersJSON(list);
+    return characterData;
+  },
+
+  async updateCharacter(id, updates) {
+    const list = loadCharactersJSON();
+    const existingIndex = list.findIndex((c) => c.id === id);
+    if (existingIndex === -1) return null;
+    list[existingIndex] = { ...list[existingIndex], ...updates };
+    saveCharactersJSON(list);
+    return list[existingIndex];
+  },
+
   // Config
   async getConfig() {
     const envPrice = process.env.V2_PREMIUM_PRICE;
     const envCurrency = process.env.V2_PREMIUM_CURRENCY || 'INR';
 
-    const price = envPrice !== undefined && envPrice !== '' ? Number(envPrice) : fallbackStore.config.v2Price;
+    const price = envPrice !== undefined && envPrice !== '' ? Number(envPrice) : dbStore.config.v2Price;
     const priceConfigured = envPrice !== '' && !isNaN(price);
 
     return {
@@ -95,11 +140,11 @@ export const repository = {
   },
 
   async setPrice(price, currency = 'INR') {
-    fallbackStore.config.v2Price = price;
-    fallbackStore.config.currency = currency;
-    fallbackStore.config.priceConfigured = price !== null && !isNaN(price);
-    persistFallback();
-    return fallbackStore.config;
+    dbStore.config.v2Price = price;
+    dbStore.config.currency = currency;
+    dbStore.config.priceConfigured = price !== null && !isNaN(price);
+    persistDB();
+    return dbStore.config;
   },
 
   // Licenses
@@ -122,67 +167,36 @@ export const repository = {
       createdAt: new Date().toISOString()
     };
 
-    fallbackStore.licenses.push(license);
-    persistFallback();
-
-    if (isMongoConnected) {
-      try {
-        const LicenseModel = mongoose.model('License');
-        await LicenseModel.create(license);
-      } catch (e) {
-        console.error('[DB] Mongo save error:', e.message);
-      }
-    }
+    dbStore.licenses.push(license);
+    persistDB();
     return license;
   },
 
   async findLicenseByKey(key) {
-    if (isMongoConnected) {
-      try {
-        const LicenseModel = mongoose.model('License');
-        const doc = await LicenseModel.findOne({ licenseKey: key }).lean();
-        if (doc) return doc;
-      } catch (e) {
-        console.warn('[DB] Mongo lookup error:', e.message);
-      }
-    }
-    return fallbackStore.licenses.find(l => l.licenseKey === key) || null;
+    return dbStore.licenses.find((l) => l.licenseKey === key) || null;
   },
 
   async updateLicense(key, updates) {
-    const idx = fallbackStore.licenses.findIndex(l => l.licenseKey === key);
+    const idx = dbStore.licenses.findIndex((l) => l.licenseKey === key);
     if (idx !== -1) {
-      fallbackStore.licenses[idx] = { ...fallbackStore.licenses[idx], ...updates, updatedAt: new Date().toISOString() };
-      persistFallback();
+      dbStore.licenses[idx] = {
+        ...dbStore.licenses[idx],
+        ...updates,
+        updatedAt: new Date().toISOString()
+      };
+      persistDB();
+      return dbStore.licenses[idx];
     }
-
-    if (isMongoConnected) {
-      try {
-        const LicenseModel = mongoose.model('License');
-        await LicenseModel.findOneAndUpdate({ licenseKey: key }, updates, { new: true });
-      } catch (e) {
-        console.error('[DB] Mongo update error:', e.message);
-      }
-    }
-    return fallbackStore.licenses[idx] || null;
+    return null;
   },
 
   async getAllLicenses() {
-    if (isMongoConnected) {
-      try {
-        const LicenseModel = mongoose.model('License');
-        const docs = await LicenseModel.find().sort({ createdAt: -1 }).lean();
-        if (docs.length > 0) return docs;
-      } catch (e) {
-        console.warn('[DB] Mongo list error:', e.message);
-      }
-    }
-    return [...fallbackStore.licenses].reverse();
+    return [...dbStore.licenses].reverse();
   },
 
   // Orders
   async createOrder(data) {
-    if (!fallbackStore.orders) fallbackStore.orders = [];
+    if (!dbStore.orders) dbStore.orders = [];
     const order = {
       orderId: data.orderId,
       paymentId: data.paymentId || null,
@@ -198,27 +212,32 @@ export const repository = {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    fallbackStore.orders.push(order);
-    persistFallback();
+    dbStore.orders.push(order);
+    persistDB();
     return order;
   },
 
   async findOrderById(orderId) {
-    if (!fallbackStore.orders) fallbackStore.orders = [];
-    return fallbackStore.orders.find(o => o.orderId === orderId) || null;
+    if (!dbStore.orders) dbStore.orders = [];
+    return dbStore.orders.find((o) => o.orderId === orderId) || null;
+  },
+
+  async getAllOrders() {
+    if (!dbStore.orders) dbStore.orders = [];
+    return [...dbStore.orders].reverse();
   },
 
   async updateOrder(orderId, updates) {
-    if (!fallbackStore.orders) fallbackStore.orders = [];
-    const idx = fallbackStore.orders.findIndex(o => o.orderId === orderId);
+    if (!dbStore.orders) dbStore.orders = [];
+    const idx = dbStore.orders.findIndex((o) => o.orderId === orderId);
     if (idx !== -1) {
-      fallbackStore.orders[idx] = {
-        ...fallbackStore.orders[idx],
+      dbStore.orders[idx] = {
+        ...dbStore.orders[idx],
         ...updates,
         updatedAt: new Date().toISOString()
       };
-      persistFallback();
-      return fallbackStore.orders[idx];
+      persistDB();
+      return dbStore.orders[idx];
     }
     return null;
   },
@@ -241,45 +260,32 @@ export const repository = {
       status: data.status || 'verified',
       createdAt: new Date().toISOString()
     };
-    fallbackStore.payments.push(payment);
-    persistFallback();
-
-    if (isMongoConnected) {
-      try {
-        const PaymentModel = mongoose.model('Payment');
-        await PaymentModel.create(payment);
-      } catch (e) {
-        console.error('[DB] Mongo payment record error:', e.message);
-      }
-    }
+    dbStore.payments.push(payment);
+    persistDB();
     return payment;
   },
 
   async findPaymentByOrderId(orderId) {
-    return fallbackStore.payments.find(p => p.orderId === orderId) || null;
+    return dbStore.payments.find((p) => p.orderId === orderId) || null;
   },
 
   async findPaymentByPaymentId(paymentId) {
-    return fallbackStore.payments.find(p => p.paymentId === paymentId) || null;
+    return dbStore.payments.find((p) => p.paymentId === paymentId) || null;
   },
 
   async findPaymentByUtr(utr) {
     if (!utr) return null;
-    if (isMongoConnected) {
-      try {
-        const PaymentModel = mongoose.model('Payment');
-        const doc = await PaymentModel.findOne({ utr }).lean();
-        if (doc) return doc;
-      } catch (e) {
-        console.error('[DB] Mongo findPaymentByUtr error:', e.message);
-      }
-    }
-    return fallbackStore.payments.find(p => p.utr === utr) || null;
+    return dbStore.payments.find((p) => p.utr === utr) || null;
   },
 
   // Protected Download Tokens
   async createDownloadToken(licenseKey) {
-    const token = 'SF_DL_' + Date.now() + '_' + Math.random().toString(36).substring(2, 12) + Math.random().toString(36).substring(2, 12);
+    const token =
+      'SF_DL_' +
+      Date.now() +
+      '_' +
+      Math.random().toString(36).substring(2, 12) +
+      Math.random().toString(36).substring(2, 12);
     const expiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString(); // 30 minutes validity
     const record = {
       token,
@@ -288,13 +294,13 @@ export const repository = {
       downloadsCount: 0,
       createdAt: new Date().toISOString()
     };
-    fallbackStore.downloadTokens.push(record);
-    persistFallback();
+    dbStore.downloadTokens.push(record);
+    persistDB();
     return record;
   },
 
   async verifyAndConsumeDownloadToken(token) {
-    const record = fallbackStore.downloadTokens.find(t => t.token === token);
+    const record = dbStore.downloadTokens.find((t) => t.token === token);
     if (!record) return { valid: false, reason: 'TOKEN_NOT_FOUND' };
 
     if (new Date(record.expiresAt) < new Date()) {
@@ -303,8 +309,64 @@ export const repository = {
 
     record.downloadsCount += 1;
     record.lastDownloadedAt = new Date().toISOString();
-    persistFallback();
+    persistDB();
     return { valid: true, record };
+  },
+
+  // Contact Inquiries (Pure JSON Storage)
+  async recordInquiry(data) {
+    if (!dbStore.inquiries) dbStore.inquiries = [];
+    const inquiry = {
+      id: 'inq_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      name: data.name,
+      email: data.email,
+      topic: data.topic,
+      message: data.message,
+      createdAt: new Date().toISOString()
+    };
+    dbStore.inquiries.push(inquiry);
+    persistDB();
+    return inquiry;
+  },
+
+  async getInquiries() {
+    return dbStore.inquiries || [];
+  },
+
+  // Customer Accounts (Login / Create Account)
+  async createUser(data) {
+    if (!dbStore.users) dbStore.users = [];
+    const cleanEmail = String(data.email || '').toLowerCase().trim();
+    let existing = dbStore.users.find(u => u.email.toLowerCase() === cleanEmail);
+    if (existing) {
+      if (data.name && data.name.trim()) existing.name = data.name.trim();
+      if (data.phone && data.phone.trim()) existing.phone = data.phone.trim();
+      if (data.passwordHash) existing.passwordHash = data.passwordHash;
+      persistDB();
+      return existing;
+    }
+    const user = {
+      id: 'usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      name: data.name || cleanEmail.split('@')[0] || 'Sacred Devotee',
+      email: cleanEmail,
+      phone: data.phone || '',
+      passwordHash: data.passwordHash || '',
+      createdAt: new Date().toISOString()
+    };
+    dbStore.users.push(user);
+    persistDB();
+    return user;
+  },
+
+  async findUserByEmail(email) {
+    if (!dbStore.users) dbStore.users = [];
+    const cleanEmail = String(email || '').toLowerCase().trim();
+    return dbStore.users.find(u => u.email.toLowerCase() === cleanEmail) || null;
+  },
+
+  async authenticateUser(email, passwordHash) {
+    const user = await this.findUserByEmail(email);
+    if (!user) return null;
+    return user;
   }
 };
-

@@ -336,6 +336,30 @@ body.hero-active .ambient-glow-layer {
   display: none;
 }
 
+.nav-sound-btn {
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 9999px;
+  color: var(--color-gold-light);
+  font-family: inherit;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.32rem 0.65rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.nav-sound-btn:hover {
+  background: rgba(212, 175, 55, 0.24);
+  color: var(--color-warm-ivory);
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+  transform: translateY(-1px);
+}
+
 .nav-actions {
   display: flex;
   align-items: center;

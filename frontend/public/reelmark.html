@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reelmark — Captivate Crowds with Snackable Reels</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter+Tight:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #F5F8EF;
+      --forest: #08482D;
+      --mint: #DAE7C7;
+      --ink: #101410;
+      --subline: #5E5E61;
+      --u: min(100vw / 1440, 100vh / 1080);
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Fixed 1440x1080 Master Frame Centered via --u */
+    .viewport-frame {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: calc(1440 * var(--u));
+      height: calc(1080 * var(--u));
+      transform: translate(-50%, -50%);
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    /* Top Bar */
+    .logo {
+      position: absolute;
+      left: calc(37 * var(--u));
+      top: calc(36 * var(--u));
+      display: flex;
+      align-items: center;
+      gap: calc(8 * var(--u));
+      text-decoration: none;
+      color: var(--forest);
+      font-weight: 700;
+      font-size: calc(22 * var(--u));
+      letter-spacing: -0.02em;
+      z-index: 20;
+    }
+
+    .logo-leaf {
+      width: calc(24 * var(--u));
+      height: calc(24 * var(--u));
+      fill: var(--forest);
+    }
+
+    .nav-links {
+      position: absolute;
+      left: calc(505 * var(--u));
+      top: calc(39 * var(--u));
+      display: flex;
+      align-items: center;
+      gap: calc(31 * var(--u));
+      z-index: 20;
+    }
+
+    .nav-links a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: calc(16.4 * var(--u));
+      font-weight: 500;
+      opacity: 0.85;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+      color: var(--forest);
+    }
+
+    .top-actions {
+      position: absolute;
+      right: calc(39 * var(--u));
+      top: calc(29 * var(--u));
+      display: flex;
+      align-items: center;
+      gap: calc(12 * var(--u));
+      z-index: 20;
+    }
+
+    .btn-login {
+      width: calc(92 * var(--u));
+      height: calc(40 * var(--u));
+      border-radius: 9999px;
+      background: #FFFFFF;
+      border: 1px solid rgba(8, 72, 45, 0.15);
+      color: var(--ink);
+      font-size: calc(15 * var(--u));
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-login:hover {
+      background: #FAFAFA;
+      border-color: var(--forest);
+    }
+
+    .btn-signup {
+      width: calc(97 * var(--u));
+      height: calc(40 * var(--u));
+      border-radius: 9999px;
+      background: var(--forest);
+      border: none;
+      color: #FFFFFF;
+      font-size: calc(15 * var(--u));
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-signup:hover {
+      background: #0b5e3b;
+    }
+
+    /* Badge */
+    .badge {
+      position: absolute;
+      left: calc(575 * var(--u));
+      top: calc(115 * var(--u));
+      width: calc(292 * var(--u));
+      height: calc(37 * var(--u));
+      border-radius: 9999px;
+      background: var(--mint);
+      color: var(--forest);
+      font-size: calc(16.6 * var(--u));
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: -0.01em;
+      z-index: 10;
+    }
+
+    /* Headline */
+    .headline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(176 * var(--u));
+      text-align: center;
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
+      font-size: calc(88 * var(--u));
+      line-height: calc(92 * var(--u));
+      letter-spacing: -0.035em;
+      color: var(--ink);
+      z-index: 10;
+    }
+
+    .headline span.line-2 {
+      display: block;
+      letter-spacing: -0.022em;
+    }
+
+    /* Subline */
+    .subline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(394 * var(--u));
+      text-align: center;
+      font-size: calc(20.8 * var(--u));
+      line-height: calc(32 * var(--u));
+      color: var(--subline);
+      z-index: 10;
+    }
+
+    /* Handwritten Doodles & Notes */
+    .note {
+      position: absolute;
+      font-family: 'Caveat', cursive;
+      color: var(--forest);
+      font-weight: 600;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    .doodle-slash {
+      left: calc(263 * var(--u));
+      top: calc(377 * var(--u));
+      font-size: calc(42 * var(--u));
+      letter-spacing: calc(-4 * var(--u));
+    }
+
+    .note-be-seen {
+      left: calc(1212 * var(--u));
+      top: calc(310 * var(--u));
+      font-size: calc(32 * var(--u));
+      line-height: 1.1;
+      transform: rotate(16deg);
+    }
+
+    .arrow-be-seen {
+      position: absolute;
+      left: calc(1215 * var(--u));
+      top: calc(385 * var(--u));
+      width: calc(85 * var(--u));
+      height: calc(120 * var(--u));
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    .note-zero-cost {
+      left: calc(521 * var(--u));
+      top: calc(937 * var(--u));
+      font-size: calc(32 * var(--u));
+      transform: rotate(24deg);
+    }
+
+    .arrow-zero-cost {
+      position: absolute;
+      left: calc(595 * var(--u));
+      top: calc(945 * var(--u));
+      width: calc(32 * var(--u));
+      height: calc(30 * var(--u));
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    /* CTA Button & Dashed Ring */
+    .cta-container {
+      position: absolute;
+      left: calc(626 * var(--u));
+      top: calc(901 * var(--u));
+      width: calc(190 * var(--u));
+      height: calc(74 * var(--u));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+    }
+
+    .cta-ring {
+      position: absolute;
+      inset: 0;
+      border: 1.5px dashed rgba(8, 72, 45, 0.4);
+      border-radius: 9999px;
+      pointer-events: none;
+    }
+
+    .btn-cta {
+      width: calc(172 * var(--u));
+      height: calc(58 * var(--u));
+      background: var(--forest);
+      border: none;
+      border-radius: 9999px;
+      color: #FFFFFF;
+      font-size: calc(18 * var(--u));
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(8, 72, 45, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .btn-cta:hover {
+      background: #0b5e3b;
+      transform: scale(1.02);
+    }
+
+    /* Curved Carousel Stage */
+    .carousel-stage {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: calc(1440 * var(--u));
+      height: calc(1080 * var(--u));
+      cursor: grab;
+      touch-action: none;
+      z-index: 12;
+    }
+
+    .carousel-stage.is-dragging {
+      cursor: grabbing;
+    }
+
+    .carousel-card {
+      position: absolute;
+      left: 0;
+      top: 0;
+      overflow: hidden;
+      background: #DAE7C7;
+      will-change: transform, clip-path;
+      transform-origin: center center;
+      pointer-events: auto;
+    }
+
+    .card-media-wrapper {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #e4eed4;
+    }
+
+    .card-video,
+    .card-poster {
+      position: absolute;
+      object-fit: none;
+      pointer-events: none;
+      image-rendering: -webkit-optimize-contrast;
+    }
+
+    .card-play-icon {
+      position: absolute;
+      left: calc(12 * var(--u));
+      bottom: calc(12 * var(--u));
+      width: calc(32 * var(--u));
+      height: calc(32 * var(--u));
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .card-play-icon svg {
+      width: calc(14 * var(--u));
+      height: calc(14 * var(--u));
+      fill: var(--forest);
+      margin-left: calc(2 * var(--u));
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      .card-video {
+        display: none !important;
+      }
+    }
+
+    /* Mobile (<= 820px) */
+    @media (max-width: 820px) {
+      :root {
+        --u: calc(100vw / 640);
+      }
+      .viewport-frame {
+        width: 100vw;
+        height: 100vh;
+        transform: none;
+        left: 0;
+        top: 0;
+        overflow-y: auto;
+      }
+      .nav-links, .btn-login {
+        display: none;
+      }
+      .headline {
+        font-size: clamp(38px, 9vw, 56px);
+        line-height: 1.1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="viewport-frame" id="viewportFrame">
+    <!-- Top Bar -->
+    <a href="#" class="logo" aria-label="Reelmark Home">
+      <svg class="logo-leaf" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2C6.5 2 2 6.5 2 12c0 3.5 1.8 6.6 4.6 8.4C6.2 19 6 17.5 6 16c0-5.5 4.5-10 10-10 1.5 0 3 .2 4.4.6C18.6 3.8 15.5 2 12 2zM19.4 8.6C18.3 8.2 17.2 8 16 8c-4.4 0-8 3.6-8 8 0 1.2.2 2.3.6 3.4C13.2 19.8 17.8 17.2 19.4 8.6z"/>
+      </svg>
+      <span>Reelmark</span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#">Brands</a>
+      <a href="#">Creators</a>
+      <a href="#">Pricing</a>
+      <a href="#">Use Cases</a>
+      <a href="#">Contact</a>
+    </nav>
+
+    <div class="top-actions">
+      <button type="button" class="btn-login">Log in</button>
+      <button type="button" class="btn-signup">Sign up</button>
+    </div>
+
+    <!-- Badge -->
+    <div class="badge">
+      <span>Trusted by 120,000+ indie makers</span>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="headline">
+      Captivate Crowds
+      <span class="line-2">with Snackable Reels</span>
+    </h1>
+
+    <!-- Subline -->
+    <p class="subline">
+      Grow your brand with short, snappy product clips by<br>
+      our handpicked video makers. Our crew is ready to<br>
+      lift your next launch higher.
+    </p>
+
+    <!-- Notes & Doodles -->
+    <div class="note doodle-slash" aria-hidden="true">//</div>
+
+    <div class="note note-be-seen" aria-hidden="true">
+      Be seen<br>with clips
+    </div>
+    <svg class="arrow-be-seen" viewBox="0 0 85 120" fill="none" aria-hidden="true">
+      <path d="M10 10 Q 55 40 40 105 M 28 92 L 40 105 L 56 94" stroke="#08482D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <div class="note note-zero-cost" aria-hidden="true">Zero cost</div>
+    <svg class="arrow-zero-cost" viewBox="0 0 32 30" fill="none" aria-hidden="true">
+      <path d="M5 25 Q 18 10 28 5 M 20 4 L 28 5 L 26 14" stroke="#08482D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <!-- Curved Carousel Stage -->
+    <div class="carousel-stage" id="carouselStage"></div>
+
+    <!-- CTA Button -->
+    <div class="cta-container">
+      <div class="cta-ring"></div>
+      <button type="button" class="btn-cta">Make a Reel</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const TOTAL_CARDS = 10;
+      const PITCH = 196;
+      const LOOP_SPAN = TOTAL_CARDS * PITCH; // 1960u
+      const AUTO_SPEED = 50; // 50u per second right -> left
+      const VELOCITY_DECAY = 0.95; // 95% decay per second
+      const GRID_COLS = 5;
+      const GRID_ROWS = 2;
+      const VIDEO_SRC = "https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/04fd3d5f-99d7-476e-98a4-46c08518ffb3.mp4";
+      const POSTER_SRC = "https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/b7ebb74a-8c8a-4f7e-8f80-55e2d74ecd05.webp";
+
+      const stage = document.getElementById('carouselStage');
+      let u = 1;
+
+      function updateU() {
+        u = Math.min(window.innerWidth / 1440, window.innerHeight / 1080);
+      }
+      updateU();
+      window.addEventListener('resize', updateU);
+
+      // Create card elements
+      const cards = [];
+      for (let i = 0; i < TOTAL_CARDS; i++) {
+        const card = document.createElement('div');
+        card.className = 'carousel-card';
+        card.innerHTML = `
+          <div class="card-media-wrapper">
+            <img class="card-poster" src="${POSTER_SRC}" alt="" draggable="false">
+            <video class="card-video" src="${VIDEO_SRC}" muted loop playsinline preload="auto"></video>
+            <div class="card-play-icon">
+              <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+            </div>
+          </div>
+        `;
+        stage.appendChild(card);
+        const video = card.querySelector('video');
+        video.play().catch(() => {});
+        cards.push({
+          el: card,
+          poster: card.querySelector('.card-poster'),
+          video: video,
+          index: i
+        });
+      }
+
+      // Synchronize video timeline
+      let synced = false;
+      function syncVideos() {
+        if (synced) return;
+        const first = cards[0]?.video;
+        if (first && first.readyState >= 2) {
+          const t = first.currentTime;
+          cards.forEach((c) => {
+            if (c.video !== first && Math.abs(c.video.currentTime - t) > 0.08) {
+              c.video.currentTime = t;
+            }
+          });
+          synced = true;
+        }
+      }
+      cards[0]?.video.addEventListener('timeupdate', syncVideos);
+
+      // Position and physics state
+      let scrollOffset = 0;
+      let velocity = 0;
+      let isDragging = false;
+      let lastPointerX = 0;
+      let lastTime = performance.now();
+
+      // Drag interaction
+      stage.addEventListener('pointerdown', (e) => {
+        isDragging = true;
+        stage.classList.add('is-dragging');
+        lastPointerX = e.clientX;
+        velocity = 0;
+        stage.setPointerCapture(e.pointerId);
+      });
+
+      stage.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        const deltaPx = e.clientX - lastPointerX;
+        lastPointerX = e.clientX;
+        const deltaU = deltaPx / u;
+        // Direct 1:1 drag
+        scrollOffset += deltaU;
+        velocity = deltaU * 60; // instantaneous velocity in u/s
+      });
+
+      function endDrag() {
+        if (!isDragging) return;
+        isDragging = false;
+        stage.classList.remove('is-dragging');
+      }
+
+      stage.addEventListener('pointerup', endDrag);
+      stage.addEventListener('pointercancel', endDrag);
+
+      // Continuous Physics & Cylindrical Projection Loop
+      function renderLoop(now) {
+        const dt = Math.min(0.05, (now - lastTime) / 1000);
+        lastTime = now;
+
+        if (!isDragging) {
+          // Decay momentum velocity by 95% per second
+          velocity *= Math.pow(1 - VELOCITY_DECAY, dt);
+          if (Math.abs(velocity) < 1) velocity = 0;
+
+          // Auto-scroll right -> left (decreasing scrollOffset by AUTO_SPEED)
+          scrollOffset += (-AUTO_SPEED * dt) + (velocity * dt);
+        }
+
+        // Loop seamlessly
+        scrollOffset = ((scrollOffset % LOOP_SPAN) + LOOP_SPAN) % LOOP_SPAN;
+
+        // Render each card along the mathematical cylinder curve
+        for (let i = 0; i < TOTAL_CARDS; i++) {
+          const card = cards[i];
+          // Base unpushed offset t from center (720)
+          let t = ((i * PITCH + scrollOffset) % LOOP_SPAN);
+          // Center around 0 (-LOOP_SPAN/2 to +LOOP_SPAN/2)
+          if (t > LOOP_SPAN / 2) t -= LOOP_SPAN;
+
+          // Outward push formula: x = 720 + t * (1 + 0.083 * (t / 706)^2)
+          const normT = t / 706;
+          const x = 720 + t * (1 + 0.083 * normT * normT);
+
+          // Normalized distance from center (720): d = |x - 720| / 706
+          const d = Math.abs(x - 720) / 706;
+
+          // Width = (170 + 48 * d^2)
+          const cardW = 170 + 48 * d * d;
+
+          // Vertical center = (687 - 12 * d^2)
+          const centerY = 687 - 12 * d * d;
+
+          // Edges: left and right
+          const xLeft = x - cardW / 2;
+          const xRight = x + cardW / 2;
+          const qLeft = Math.abs(xLeft - 720) / 706;
+          const qRight = Math.abs(xRight - 720) / 706;
+
+          // Edge height = (280 + 92 * q^2.6)
+          const hLeft = 280 + 92 * Math.pow(qLeft, 2.6);
+          const hRight = 280 + 92 * Math.pow(qRight, 2.6);
+          const maxH = Math.max(hLeft, hRight);
+
+          // Card box placement in u units
+          const leftU = x - cardW / 2;
+          const topU = centerY - maxH / 2;
+
+          card.el.style.width = (cardW * u) + 'px';
+          card.el.style.height = (maxH * u) + 'px';
+          card.el.style.transform = `translate(${leftU * u}px, ${topU * u}px)`;
+
+          // Quad clip-path: outer edge is taller than inner edge with rounded corners
+          // y-offsets relative to maxH
+          const dyLeft = (maxH - hLeft) / 2;
+          const dyRight = (maxH - hRight) / 2;
+
+          const r = 15 * u; // 15u corner radius
+          const pTopLeftY = dyLeft * u;
+          const pBotLeftY = (maxH - dyLeft) * u;
+          const pTopRightY = dyRight * u;
+          const pBotRightY = (maxH - dyRight) * u;
+          const cW = cardW * u;
+
+          // Precise polygon quad with perspective slant
+          card.el.style.clipPath = `polygon(0px ${pTopLeftY}px, ${cW}px ${pTopRightY}px, ${cW}px ${pBotRightY}px, 0px ${pBotLeftY}px)`;
+          card.el.style.borderRadius = `${r}px`;
+
+          // Video Tile Mapping (5 columns x 2 rows = 10 tiles)
+          const col = i % GRID_COLS;
+          const row = Math.floor(i / GRID_COLS);
+
+          // Cover fit tile in card: tile aspect is 384/540 = 0.7111
+          const tileW = Math.max(cardW, maxH * 0.7111);
+          const tileH = tileW / 0.7111;
+
+          const fullGridW = tileW * GRID_COLS * u;
+          const fullGridH = tileH * GRID_ROWS * u;
+          const offsetX = -col * tileW * u;
+          const offsetY = -row * tileH * u;
+
+          if (card.poster) {
+            card.poster.style.width = fullGridW + 'px';
+            card.poster.style.height = fullGridH + 'px';
+            card.poster.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+          }
+          if (card.video) {
+            card.video.style.width = fullGridW + 'px';
+            card.video.style.height = fullGridH + 'px';
+            card.video.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+          }
+        }
+
+        requestAnimationFrame(renderLoop);
+      }
+
+      requestAnimationFrame(renderLoop);
+    })();
+  </script>
+</body>
+</html>

@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 
 const YOUPI_PAYMENT_API_URL = (process.env.YOUPI_PAYMENT_API_URL || 'http://localhost:6100').replace(/\/+$/, '');
 const YOUPI_CHECKOUT_URL = (process.env.YOUPI_CHECKOUT_URL || 'http://localhost:7000').replace(/\/+$/, '');
+const SERVER_BASE_URL = (process.env.SERVER_BASE_URL || 'http://localhost:5500').replace(/\/+$/, '');
 const YOUPI_MERCHANT_ID = process.env.YOUPI_MERCHANT_ID || '00000000-0000-0000-0000-000000000001';
 const YOUPI_MERCHANT_KEY = process.env.YOUPI_MERCHANT_KEY || 'mk_live_c12afcf0460bc5593179e0b9c25d871d1a6d00afe0494f66';
 const YOUPI_WEBHOOK_SECRET = process.env.YOUPI_WEBHOOK_SECRET || 'd86590211edbe497f040a7b0f4e639527151a414a7fd7f8754bdd4d845ca1d1a';
@@ -55,7 +56,7 @@ export const youpiClient = {
         name: customerName,
         email: customerEmail
       },
-      returnUrl: returnUrl || `http://localhost:5000/api/payment/return?orderId=${encodeURIComponent(orderId)}`
+      returnUrl: returnUrl || `${SERVER_BASE_URL}/api/payment/return?orderId=${encodeURIComponent(orderId)}`
     };
 
     const res = await fetch(`${YOUPI_PAYMENT_API_URL}/api/v1/payments`, {

@@ -1,0 +1,374 @@
+/* =========================================================
+   SACRED FRIENDS HERO — GOLDEN LOTUS SANCTUARY THEME
+   Warm Champagne Cream Canvas, Divine Golden Lotus Ring,
+   Golden Pollen Shimmer Particles & Auto-Cycling Deities
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+
+/* =========================================================
+   SCROLL TRACK RUNWAY (Eyes Awakening On Scroll Down)
+   Sticky 100vh viewport inside 200vh track for cinematic scrub
+   ========================================================= */
+.traffic-gods-scroll-track {
+  position: relative;
+  width: 100%;
+  height: 200vh;
+  background-color: #020204;
+}
+
+.traffic-gods-viewport {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #020204;
+  color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+/* Continuous Ambient Background Video with Feathered Bottom Gradient Mask */
+.traffic-gods-hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.92;
+  mask-image: linear-gradient(to bottom, #000000 60%, rgba(0, 0, 0, 0.85) 75%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000000 60%, rgba(0, 0, 0, 0.85) 75%, transparent 100%);
+}
+
+@media (max-width: 900px) {
+  .traffic-gods-viewport {
+    height: auto;
+    min-height: 100vh;
+  }
+}
+
+/* 1. Atmospheric Soft Golden Glow Overlays */
+.traffic-gods-bg-nebula {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.35) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Seamless Bottom Vignette Fade into Subsequent Section */
+.traffic-gods-bottom-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: clamp(160px, 32vh, 420px);
+  background: linear-gradient(to bottom,
+      transparent 0%,
+      rgba(2, 2, 4, 0.15) 25%,
+      rgba(2, 2, 4, 0.6) 55%,
+      rgba(2, 2, 4, 0.92) 80%,
+      #020204 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.smoke-layer {
+  display: none;
+}
+
+.smoke-layer-2 {
+  display: none;
+}
+
+@keyframes smokeDrift {
+  0% {
+    transform: scale(1) translate(-20px, -15px) rotate(0deg);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scale(1.15) translate(25px, 15px) rotate(8deg);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(0.95) translate(-15px, 20px) rotate(-5deg);
+    opacity: 0.7;
+  }
+}
+
+/* Floating Rising Golden Pollen & Shimmer Canvas */
+.embers-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 8;
+}
+
+/* 2. HEADER STACK (Positioned elegantly at the lower portion of the hero) */
+.traffic-gods-header-stack {
+  position: absolute;
+  bottom: clamp(2rem, 6.5vh, 4.5rem);
+  left: 0;
+  z-index: 25;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+/* GIANT IMPERIAL SERIF HEADLINE IN LUMINOUS GOLD & BRONZE */
+.traffic-gods-title-wrap {
+  position: relative;
+  z-index: 25;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  padding: 0 clamp(1rem, 3vw, 3rem);
+  box-sizing: border-box;
+  user-select: none;
+  pointer-events: auto;
+  transition: transform 0.15s ease-out;
+}
+
+.traffic-gods-headline {
+  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-size: clamp(2.2rem, 5.8vw, 6rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: clamp(0.14em, 0.22vw, 0.26em);
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+
+  /* Clean, Ultra-Luminous Pristine White Platinum Metallic Gradient */
+  background: linear-gradient(180deg,
+      #FFFFFF 0%,
+      #FFFFFF 40%,
+      #F8FAFC 70%,
+      #E2E8F0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Clean cinematic dark drop shadow — completely eliminates the muddy gold shadow */
+  filter:
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.95))
+    drop-shadow(0 6px 20px rgba(0, 0, 0, 0.9));
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 4. CENTERPIECE VISUAL: GOLDEN LOTUS SANCTUARY */
+.traffic-gods-hero-center {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 0;
+  padding: clamp(0.5rem, 1.5vh, 1.5rem) 0;
+  box-sizing: border-box;
+  perspective: 1000px;
+}
+
+/* UNIFIED PORTAL RIG: Mathematical 1:1 Aspect Ratio Matching the Golden Lotus in the Background */
+.traffic-gods-portal-rig {
+  position: relative;
+  width: clamp(280px, min(44vw, 50vh), 450px);
+  height: clamp(280px, min(44vw, 50vh), 450px);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  will-change: transform;
+}
+
+/* Golden Lotus Contact Shadow */
+.golden-lotus-shadow {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48%;
+  height: 12%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(110, 65, 20, 0.45) 0%, rgba(150, 100, 35, 0.18) 50%, transparent 75%);
+  filter: blur(5px);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* 5. THE CHARACTER OF THE GODS (STANDING MAJESTICALLY ON THE GOLDEN LOTUS) */
+.traffic-gods-deity-stage {
+  position: absolute;
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 8;
+  width: 80%;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.traffic-gods-deity-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  filter:
+    drop-shadow(0 15px 25px rgba(90, 55, 20, 0.3)) drop-shadow(0 0 40px rgba(255, 215, 110, 0.65)) drop-shadow(0 0 15px rgba(255, 245, 200, 0.8));
+  animation: deityBreathe 6s ease-in-out infinite alternate;
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.traffic-gods-deity-img.fading {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+@keyframes deityBreathe {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+
+  50% {
+    transform: scale(1.025, 1.025) translateY(-3px);
+  }
+
+  100% {
+    transform: scale(0.99, 0.99) translateY(2px);
+  }
+}
+
+.traffic-gods-deity-stage:hover .traffic-gods-deity-img {
+  transform: scale(1.06);
+  filter:
+    drop-shadow(0 20px 35px rgba(90, 55, 20, 0.4)) drop-shadow(0 0 50px rgba(255, 215, 110, 0.85)) drop-shadow(0 0 25px rgba(255, 245, 200, 0.95));
+}
+
+/* Symmetrical Deity Cycler Arrows (Champagne Glassmorphism) */
+.deity-cycle-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #3b2413;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 25;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 0.95rem;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 4px 18px rgba(100, 60, 20, 0.15);
+}
+
+.deity-cycle-btn:hover {
+  background: rgba(255, 245, 210, 0.9);
+  border-color: #d4af37;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 0 22px rgba(212, 175, 55, 0.6);
+  color: #1a0e05;
+}
+
+.deity-cycle-btn.prev {
+  left: clamp(1.5rem, 5vw, 6rem);
+}
+
+.deity-cycle-btn.next {
+  right: clamp(1.5rem, 5vw, 6rem);
+}
+
+@media (max-width: 600px) {
+  .deity-cycle-btn.prev {
+    left: 10px;
+  }
+
+  .deity-cycle-btn.next {
+    right: 10px;
+  }
+}
+
+/* Ambient Scroll Indicator Hint */
+.traffic-gods-scroll-hint {
+  position: absolute;
+  bottom: clamp(0.75rem, 2vh, 1.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+}
+
+.traffic-gods-scroll-hint span {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 235, 180, 0.75);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.traffic-gods-scroll-hint .scroll-chevron {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid rgba(255, 220, 140, 0.85);
+  border-bottom: 2px solid rgba(255, 220, 140, 0.85);
+  transform: rotate(45deg);
+  animation: chevronPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes chevronPulse {
+  0% {
+    transform: translateY(0) rotate(45deg);
+    opacity: 0.3;
+  }
+
+  50% {
+    transform: translateY(5px) rotate(45deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0) rotate(45deg);
+    opacity: 0.3;
+  }
+}
+

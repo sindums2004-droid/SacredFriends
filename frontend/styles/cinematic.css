@@ -128,31 +128,30 @@
   gap: 0.5rem;
   padding: 0.4rem 1.1rem;
   font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-gold-light);
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid var(--border-gold-subtle);
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-full);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   margin-bottom: 1.25rem;
 }
 
 .realm-title {
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 5vw, 3.8rem);
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: 0.03em;
-  color: var(--color-warm-ivory);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: #ffffff;
   margin-bottom: 1rem;
-  text-shadow: 0 0 35px rgba(212, 175, 55, 0.35);
 }
 
 .realm-title .gold-shimmer {
-  background: linear-gradient(135deg, #fff7d6 0%, #d4af37 45%, #fef08a 70%, #b8860b 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #94a3b8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -525,8 +524,9 @@
 
 /* --- Section 3: MEET THE 15 SACRED FRIENDS (THE GRAND PANTHEON) --- */
 .realm-pantheon {
-  padding-top: 7rem;
-  padding-bottom: 7rem;
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
+  min-height: auto;
   background: radial-gradient(circle at 50% 20%, rgba(12, 22, 54, 0.6) 0%, rgba(4, 7, 18, 0.98) 80%);
 }
 
@@ -535,7 +535,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  margin-bottom: 3.5rem;
+  margin-bottom: 0.75rem;
   flex-wrap: wrap;
 }
 
@@ -568,17 +568,25 @@
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
 }
 
-/* Grand Unboxed Pantheon Grid */
+/* Pantheon 3x2 Balanced Grid (Top 3 and Bottom 3) */
 .pantheon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  gap: 2.25rem 1.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem 1.75rem;
   width: 100%;
 }
 
-@media (min-width: 1200px) {
+@media (max-width: 1024px) {
   .pantheon-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .pantheon-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 }
 
@@ -855,7 +863,7 @@
 }
 
 .pricing-card-free .pricing-amount {
-  color: #ff4b57;
+  color: #ffffff;
 }
 
 .pricing-period {
@@ -924,15 +932,17 @@
 }
 
 .pricing-cta-primary {
-  border-color: #ef3340;
-  color: #fff;
-  background: #e82735;
-  box-shadow: 0 5px 16px rgba(232, 39, 53, 0.2);
+  border-color: rgba(254, 240, 138, 0.45);
+  color: #050811;
+  background: linear-gradient(135deg, #fef08a 0%, #d4af37 60%, #b8860b 100%);
+  box-shadow: 0 4px 18px rgba(212, 175, 55, 0.35);
+  font-weight: 700;
 }
 
 .pricing-cta-primary:hover {
-  border-color: #ff5260;
-  background: #f13745;
+  border-color: #fef08a;
+  background: linear-gradient(135deg, #ffffff 0%, #fef08a 40%, #d4af37 100%);
+  box-shadow: 0 6px 26px rgba(212, 175, 55, 0.5);
 }
 
 .pricing-license-note {
@@ -956,13 +966,15 @@
 }
 
 .pricing-dashboard button {
-  color: #ff737c;
+  color: #fef08a;
   font-size: inherit;
   font-weight: 600;
+  transition: color 0.2s ease;
 }
 
 .pricing-dashboard button:hover {
-  color: #ff9aa1;
+  color: #ffffff;
+  text-decoration: underline;
 }
 
 @media (max-width: 640px) {
@@ -1619,11 +1631,93 @@
    11. ENHANCED SOVEREIGN UPI & RAZORPAY CHECKOUT TERMINAL
    ========================================================= */
 #checkout-modal .modal-dialog {
-  max-width: 430px;
+  max-width: 480px;
+  width: 95%;
+  max-height: 92vh;
+  overflow-y: auto;
   background: radial-gradient(circle at 50% 8%, #0e1a3e 0%, #050a1a 100%);
   border: 1px solid var(--border-gold-bright);
   box-shadow: 0 0 60px rgba(212, 175, 55, 0.22), 0 25px 50px -12px rgba(0, 0, 0, 0.75);
   padding: 1.4rem 1.35rem;
+}
+
+/* YouPI-PG Embedded Portal Styles */
+.youpi-embed-container {
+  width: 100%;
+  margin: 0.5rem 0 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.youpi-embed-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.25rem;
+  font-size: 0.74rem;
+}
+
+.youpi-badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #38BDF8;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.youpi-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38BDF8;
+  box-shadow: 0 0 8px #38BDF8;
+  animation: youpiPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes youpiPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+}
+
+.youpi-external-link {
+  color: var(--color-gold-light, #E2B155);
+  font-size: 0.72rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.youpi-external-link:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
+
+.youpi-iframe-frame {
+  width: 100%;
+  height: 480px;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  background: #060B18;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.youpi-checkout-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #060B18;
 }
 
 .checkout-stage {
